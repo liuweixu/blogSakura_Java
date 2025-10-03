@@ -1,10 +1,7 @@
 package org.example.blogsakura_java.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.blogsakura_java.pojo.Article;
-import org.example.blogsakura_java.pojo.ArticleInsert;
-import org.example.blogsakura_java.pojo.ArticleQuery;
-import org.example.blogsakura_java.pojo.Result;
+import org.example.blogsakura_java.pojo.*;
 import org.example.blogsakura_java.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +26,7 @@ public class ArticleController {
         return Result.success();
     }
 
-    @GetMapping("/backend/articlelist/{id}")
+    @GetMapping("/backend/article/{id}")
     public Result getArticleById(@PathVariable String id){
         log.info("筛选id的文章");
         return Result.success(articleService.getArticleById(id));
@@ -39,6 +36,13 @@ public class ArticleController {
     public Result insertArticle(@RequestBody ArticleInsert articleInsert){
         log.info("插入文章");
         articleService.insertArticle(articleInsert);
+        return Result.success();
+    }
+
+    @PutMapping("/backend/article/{id}")
+    public Result UpdateArticle(@RequestBody ArticleUpdate articleUpdate, @PathVariable String id){
+        log.info("修改文章");
+        articleService.updateArticle(articleUpdate, id);
         return Result.success();
     }
 

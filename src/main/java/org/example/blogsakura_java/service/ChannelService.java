@@ -7,4 +7,6 @@ import java.util.List;
 public interface ChannelService {
 
     public List<Channel> getChannels();
+
+    public Channel getChannelById(String id);
 }

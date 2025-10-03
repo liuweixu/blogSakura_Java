@@ -7,6 +7,7 @@ import org.example.blogsakura_java.mapper.ChannelMapper;
 import org.example.blogsakura_java.pojo.Article;
 import org.example.blogsakura_java.pojo.ArticleInsert;
 import org.example.blogsakura_java.pojo.ArticleQuery;
+import org.example.blogsakura_java.pojo.ArticleUpdate;
 import org.example.blogsakura_java.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,22 @@ public class ArticleServiceImpl implements ArticleService {
         article.setContent(articleInsert.getContent());
         log.info("channelname:{}", articleInsert.getChannel());
         Long channelId = channelMapper.getChannelIdByName(articleInsert.getChannel());
-        article.setChannelId(String.valueOf(channelId));
+        article.setChannelId(channelId);
         articleMapper.insertArticle(article);
+    }
+
+    @Override
+    public void updateArticle(ArticleUpdate articleUpdate, String id) {
+        Article article = new Article();
+        article.setId(id);
+        article.setTitle(articleUpdate.getTitle());
+        article.setContent(articleUpdate.getContent());
+        article.setChannelId(channelMapper.getChannelIdByName(articleUpdate.getChannel()));
+        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        article.setEditDate(nowTime);
+        article.setImageType(articleUpdate.getImageType());
+        article.setImageUrl(articleUpdate.getImageUrl());
+
+        articleMapper.updateArticle(article);
     }
 }

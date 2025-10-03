@@ -17,6 +17,7 @@ import {
   getChannelAPI,
   addArticleAPI,
   editArticleAPI,
+  getChannelById,
 } from "@/ui-backend/apis/article";
 
 import type { ChannelItem } from "@/ui-backend/interface/Publish";
@@ -198,11 +199,13 @@ export function PublishArticle() {
       if (articleId && channelList.length > 0) {
         // 确保channelList已加载
         const res = await getArticleById(articleId.toString());
+        const res_channel = await getChannelById(res.data.channel_id);
+        const channel_name = res_channel.data.name;
         if (res.data) {
           form.setFieldsValue({
             title: res.data.title,
             content: res.data.content,
-            channel: res.data.channel_name,
+            channel: channel_name,
             image_type: res.data.image_type
           });
           setImageType(res.data.image_type);
@@ -232,8 +235,6 @@ export function PublishArticle() {
     }
     getArticleDetail();
   }, [articleId, form, channelList]); // 添加channelList依赖
-
-  console.log(fileValue);
 
   return (
     <div style={{ maxWidth: 800, marginLeft: 0 }}>

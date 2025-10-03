@@ -19,4 +19,9 @@ public class ChannelServiceImpl implements ChannelService {
     public List<Channel> getChannels() {
         return channelMapper.getChannels();
     }
+
+    @Override
+    public Channel getChannelById(String id) {
+        return channelMapper.getChannelById(Long.valueOf(id));
+    }
 }

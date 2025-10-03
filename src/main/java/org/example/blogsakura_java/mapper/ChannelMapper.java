@@ -14,4 +14,7 @@ public interface ChannelMapper {
 
     @Select("select id from channel where name = #{name}")
     public Long getChannelIdByName(String name);
+
+    @Select("select * from channel where id = #{id}")
+    public Channel getChannelById(Long id);
 }

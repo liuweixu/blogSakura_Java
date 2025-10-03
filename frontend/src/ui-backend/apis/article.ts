@@ -65,8 +65,18 @@ export function editArticleAPI(
   }
 ) {
   return request({
-    url: `/api/backend/articleput/${id}`,
+    url: `/api/backend/article/${id}`,
     method: "PUT",
     data: formData,
   });
+}
+
+//7. 从id中在频道列表中获取相应的频道名字
+export function getChannelById(
+  id: string
+) {
+  return request({
+    url: `/api/backend/channel/${id}`,
+    method: "GET"
+  })
 }

@@ -1,18 +1,16 @@
 package org.example.blogsakura_java.pojo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Article {
-    private String id;
+@NoArgsConstructor
+public class ArticleUpdate {
     private String title;
     private String content;
-    private Long channelId;
+    private String channel;
     private Integer imageType;
     private String imageUrl;
-    private String publishDate;
-    private String editDate;
 }

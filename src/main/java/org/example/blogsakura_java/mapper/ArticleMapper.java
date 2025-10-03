@@ -22,8 +22,8 @@ public interface ArticleMapper {
     @Delete("delete from article where id = #{id}")
     public void deleteArticleById(String id);
 
-//    @Update("update article set title = #{title}, content = #{content}, channel_id = #{channel_id}, image_type = #{image_type}, image_url = #{image_url}, edit_date = #{edit_date} where id = #{id}")
-//    public void updateArticle(Article article);
+    @Update("update article set title = #{title}, content = #{content}, channel_id = #{channelId}, image_type = #{imageType}, image_url = #{imageUrl}, edit_date = #{editDate} where id = #{id}")
+    public void updateArticle(Article article);
 
     @Insert("insert into article  (id, title, content, channel_id, image_type, image_url, publish_date, edit_date)" +
             "values (#{id}, #{title}, #{content}, #{channelId}, #{imageType}, #{imageUrl}, #{publishDate}, #{editDate})")
