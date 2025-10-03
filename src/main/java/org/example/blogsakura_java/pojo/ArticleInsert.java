@@ -11,6 +11,6 @@ public class ArticleInsert {
     private String title;
     private String content;
     private String channel;
-    private String imageType;
+    private Integer imageType;
     private String imageUrl;
 }

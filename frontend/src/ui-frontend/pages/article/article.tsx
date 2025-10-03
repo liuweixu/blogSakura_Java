@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { marked } from "marked";
 import 'github-markdown-css/github-markdown.css';
 import './mainwrapper_style.css';
+import {getChannelById} from "@/ui-backend/apis/article.ts";
 
 function App() {
   const location = useLocation();
@@ -16,13 +17,23 @@ function App() {
         const res = await getArticleById(id);
         console.log(res.data.data); // 打印响应数据，以便检查是否正确获取了文章列表
         // 确保data是数组，否则使用空数组
-        setData(res.data.data); // 注意这个，后台上因为添加拦截中，加上res.data，而这个是没加上，所以要多一个data
+        const title = res.data.data.title;
+        const content = res.data.data.content;
+        const channel_id = res.data.data.channel_id;
+        const res_channel = await getChannelById(channel_id.toString());
+        const channel_name = res_channel.data.name;
+        setData({
+            title: title,
+            content: content,
+            channel_name: channel_name
+        })
       } catch (error) {
         console.error("获取文章列表失败:", error);
       }
     };
     getArticleContent();
   }, [id]);
+  console.log(data);
   return (
     //ArticleWrapper
     <div>
@@ -37,7 +48,7 @@ function App() {
           />
         </div>
         <div className="max-w-[850px] p-[0_10px] m-auto text-left top-auto bottom-5 absolute left-0 right-0 text-white text-shadow-[2px_2px_10px_#000] z-[1]">
-          <h1 className="text-4xl font-bold">测试</h1>
+          <h1 className="text-4xl font-bold">{data?.title}</h1>
           {data && (
             <p className="text-[14px] p-[18px_0_0] leading-[39px]">
               <span>
@@ -46,8 +57,8 @@ function App() {
                   src="/statics/images/list_01.png"
                 ></img>
               </span>
-              <span>{data.channel_name}</span>
-              <span className="mx-1.5">·</span>
+              <span>{data?.channel_name}</span>
+              {/*<span className="mx-1.5">·</span>*/}
             </p>
           )}
         </div>

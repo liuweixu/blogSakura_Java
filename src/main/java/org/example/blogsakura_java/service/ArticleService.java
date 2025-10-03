@@ -20,4 +20,5 @@ public interface ArticleService {
     void insertArticle(ArticleInsert articleInsert);
 
     void updateArticle(ArticleUpdate articleUpdate, String id);
+
 }
