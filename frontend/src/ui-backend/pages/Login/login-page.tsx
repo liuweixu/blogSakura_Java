@@ -10,31 +10,32 @@ import {
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginAPI } from "@/ui-backend/apis/user";
 import { useForm, type FieldValues } from "react-hook-form";
-import { fetchLogin } from "@/ui-backend/store/modules/user";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import type { AnyAction } from "@reduxjs/toolkit";
 
 export function LoginPage() {
   const form = useForm();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(async (fromValue: FieldValues) => {
           //触发异步
-          await dispatch(fetchLogin(fromValue) as unknown as AnyAction);
-          navigate("/backend/home"); //跳转至首页
-          toast.success("登录成功", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
-            action: {
-              label: "关闭",
-              onClick: () => console.log("Undo"),
-            },
-          });
+          const res = await loginAPI(fromValue);
+          console.log(res);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if ((res as any).data.msg == "success") {
+            navigate("/backend/home"); //跳转至首页
+            toast.success("登录成功", {
+              description: "Sunday, December 03, 2023 at 9:00 AM",
+              action: {
+                label: "关闭",
+                onClick: () => console.log("Undo"),
+              },
+            });
+          }
         })}
       >
         <Card>

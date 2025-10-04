@@ -7,6 +7,6 @@ import org.example.blogsakura_java.pojo.User;
 @Mapper
 public interface UserMapper {
 
-    @Select("select * from user where mobile = #{mobile}")
+    @Select("select * from user where mobile = #{mobile} and code = #{code}")
     public User getUserByMobile(User user);
 }

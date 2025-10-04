@@ -1,7 +1,6 @@
 import { Login } from "@/ui-backend/pages/Login";
 import { Layout } from "@/ui-backend/pages/Layout";
 import { Routes, Route } from "react-router-dom";
-import { AuthRoute } from "@/ui-backend/components/AuthRoute";
 import { Home } from "@/ui-backend/pages/Home";
 import { ArticleList } from "@/ui-backend/pages/ArticleList";
 import { Publish } from "@/ui-backend/pages/Publish";
@@ -12,14 +11,7 @@ import { Error } from "@/components/error";
 export const RouterBackend = () => {
   return (
     <Routes>
-      <Route
-        path="/backend/"
-        element={
-          <AuthRoute>
-            <Layout />
-          </AuthRoute>
-        }
-      >
+      <Route path="/backend/" element={<Layout />}>
         <Route path="home" element={<Home />} />
         <Route path="publish" element={<Publish />} />
         <Route path="articlelist" element={<ArticleList />} />
