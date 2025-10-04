@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Layout, Menu, Popconfirm, theme } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { logoutAPI } from "@/ui-backend/apis/user";
+import { isLoginAPI, logoutAPI } from "@/ui-backend/apis/user";
 const { Header, Sider, Content } = Layout;
 
 const App: React.FC = () => {
@@ -33,100 +33,114 @@ const App: React.FC = () => {
       navigate("/backend/login");
     }
   };
+
+  //处理未登录时，同样后端界面的情况
+  const [isLogin, setIsLogin] = useState(true);
+  useEffect(() => {
+    const getIsLogin = async () => {
+      const res = await isLoginAPI();
+      setIsLogin(res?.data.code == 0 ? false : true);
+    };
+    getIsLogin();
+  }, []);
   return (
     <>
-      <Layout>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            mode="inline"
-            // defaultSelectedKeys={['1']}
-            selectedKeys={[selectedKey]}
-            items={[
-              {
-                key: "/backend/home",
-                icon: <UserOutlined />,
-                label: "首页",
-                onClick: () => navigate("/backend/home"),
-              },
-              {
-                key: "/backend/publish",
-                icon: <VideoCameraOutlined />,
-                label: "发布文章",
-                onClick: () => navigate("/backend/publish"),
-              },
-              {
-                key: "/backend/articlelist",
-                icon: <UploadOutlined />,
-                label: "文章列表",
-                onClick: () => navigate("/backend/articlelist"),
-              },
-              {
-                key: "/backend/setting",
-                icon: <UploadOutlined />,
-                label: "设置",
-                onClick: () => navigate("/backend/setting"),
-              },
-              {
-                key: "/backend/test",
-                icon: <UploadOutlined />,
-                label: "测试",
-                onClick: () => navigate("/backend/test"),
-              },
-            ]}
-          />
-        </Sider>
+      {isLogin ? (
         <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>
-            <div style={{ display: "flex" }}>
-              <div>
-                <Button
-                  type="text"
-                  icon={
-                    collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
-                  }
-                  onClick={() => setCollapsed(!collapsed)}
-                  style={{
-                    fontSize: "16px",
-                    width: 64,
-                    height: 64,
-                  }}
-                />
-              </div>
-              <div style={{ marginLeft: "auto" }}>
-                <Popconfirm
-                  title="退出"
-                  description="是否退出？"
-                  okText="Yes"
-                  cancelText="No"
-                  onConfirm={onLogout}
-                >
+          <Sider trigger={null} collapsible collapsed={collapsed}>
+            <div className="demo-logo-vertical" />
+            <Menu
+              theme="dark"
+              mode="inline"
+              // defaultSelectedKeys={['1']}
+              selectedKeys={[selectedKey]}
+              items={[
+                {
+                  key: "/backend/home",
+                  icon: <UserOutlined />,
+                  label: "首页",
+                  onClick: () => navigate("/backend/home"),
+                },
+                {
+                  key: "/backend/publish",
+                  icon: <VideoCameraOutlined />,
+                  label: "发布文章",
+                  onClick: () => navigate("/backend/publish"),
+                },
+                {
+                  key: "/backend/articlelist",
+                  icon: <UploadOutlined />,
+                  label: "文章列表",
+                  onClick: () => navigate("/backend/articlelist"),
+                },
+                {
+                  key: "/backend/setting",
+                  icon: <UploadOutlined />,
+                  label: "设置",
+                  onClick: () => navigate("/backend/setting"),
+                },
+                {
+                  key: "/backend/test",
+                  icon: <UploadOutlined />,
+                  label: "测试",
+                  onClick: () => navigate("/backend/test"),
+                },
+              ]}
+            />
+          </Sider>
+          <Layout>
+            <Header style={{ padding: 0, background: colorBgContainer }}>
+              <div style={{ display: "flex" }}>
+                <div>
                   <Button
                     type="text"
-                    icon={<LoginOutlined />}
+                    icon={
+                      collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                    }
+                    onClick={() => setCollapsed(!collapsed)}
                     style={{
                       fontSize: "16px",
                       width: 64,
+                      height: 64,
                     }}
                   />
-                </Popconfirm>
+                </div>
+                <div style={{ marginLeft: "auto" }}>
+                  <Popconfirm
+                    title="退出"
+                    description="是否退出？"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={onLogout}
+                  >
+                    <Button
+                      type="text"
+                      icon={<LoginOutlined />}
+                      style={{
+                        fontSize: "16px",
+                        width: 64,
+                      }}
+                    />
+                  </Popconfirm>
+                </div>
               </div>
-            </div>
-          </Header>
-          <Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: "100vh",
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            <Outlet />
-          </Content>
+            </Header>
+            <Content
+              style={{
+                margin: "24px 16px",
+                padding: 24,
+                minHeight: "100vh",
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              <Outlet />
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      ) : (
+        navigate("/backend/login")
+      )}
     </>
   );
 };

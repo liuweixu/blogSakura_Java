@@ -1,5 +1,6 @@
 package org.example.blogsakura_java.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.blogsakura_java.pojo.Result;
@@ -39,7 +40,6 @@ public class UserController {
 
     @GetMapping("/backend/islogin")
     public Result isLogin(){
-        log.info("是否登录{}", StpUtil.isLogin());
         if (StpUtil.isLogin()){
             return Result.success();
         } else {

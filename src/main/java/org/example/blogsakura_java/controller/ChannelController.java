@@ -1,5 +1,6 @@
 package org.example.blogsakura_java.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import org.example.blogsakura_java.pojo.Channel;
 import org.example.blogsakura_java.pojo.Result;
 import org.example.blogsakura_java.service.ChannelService;
