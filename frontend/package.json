@@ -40,6 +40,7 @@
     "cos-js-sdk-v5": "^1.10.1",
     "dayjs": "^1.11.18",
     "dotenv": "^16.5.0",
+    "echarts": "^6.0.0",
     "express": "^5.1.0",
     "github-markdown-css": "^5.8.1",
     "lucide-react": "^0.509.0",

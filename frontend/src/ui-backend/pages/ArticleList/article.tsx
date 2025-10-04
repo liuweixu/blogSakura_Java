@@ -85,7 +85,8 @@ export const Article = () => {
       title: "封面",
       dataIndex: "image_url",
       width: 120,
-      render: (cover) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (cover: any) => {
         if (cover == null) {
           // return <img src={`https://www.loliapi.com/acg/?id=${Math.floor(Math.random() * 10 + 1)}`} width={80} height={60} alt=""/>
           return (
@@ -121,7 +122,8 @@ export const Article = () => {
     },
     {
       title: "操作",
-      render: (data) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (data: any) => {
         return (
           <Space size="middle">
             <Button
@@ -156,7 +158,7 @@ export const Article = () => {
         items={[
           {
             title: "首页",
-            href: "/backend/home",
+            href: "/backend/",
           },
           {
             title: "文章列表",

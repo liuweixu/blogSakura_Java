@@ -27,7 +27,7 @@ export function LoginPage() {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((res as any).data.msg == "success") {
-            navigate("/backend/home"); //跳转至首页
+            navigate("/backend/"); //跳转至首页
             toast.success("登录成功", {
               description: "Sunday, December 03, 2023 at 9:00 AM",
               action: {

@@ -251,7 +251,7 @@ export function PublishArticle() {
         items={[
           {
             title: "首页",
-            href: "/backend/home",
+            href: "/backend/",
           },
           {
             title: `${articleId ? "编辑文章" : "发布文章"}`,

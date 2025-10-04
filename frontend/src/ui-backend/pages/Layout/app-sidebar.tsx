@@ -56,10 +56,10 @@ const App: React.FC = () => {
               selectedKeys={[selectedKey]}
               items={[
                 {
-                  key: "/backend/home",
+                  key: "/backend/",
                   icon: <UserOutlined />,
                   label: "首页",
-                  onClick: () => navigate("/backend/home"),
+                  onClick: () => navigate("/backend/"),
                 },
                 {
                   key: "/backend/publish",

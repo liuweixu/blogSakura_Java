@@ -13,7 +13,7 @@ export const RouterBackend = () => {
     <Routes>
       <Route path="/backend/login" element={<Login />} />
       <Route path="/backend/" element={<Layout />}>
-        <Route path="home" element={<Home />} />
+        <Route path="" element={<Home />} />
         <Route path="publish" element={<Publish />} />
         <Route path="articlelist" element={<ArticleList />} />
         <Route path="setting" element={<Setting />} />
