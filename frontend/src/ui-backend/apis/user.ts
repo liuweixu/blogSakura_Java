@@ -5,7 +5,7 @@ import type { FieldValues } from "react-hook-form";
 //登录请求
 export function loginAPI(formData: FieldValues) {
   return request({
-    url: "/api/backend/users",
+    url: "/api/backend/login",
     method: "POST",
     data: formData,
   });
