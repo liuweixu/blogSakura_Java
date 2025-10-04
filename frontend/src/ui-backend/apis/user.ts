@@ -10,3 +10,19 @@ export function loginAPI(formData: FieldValues) {
     data: formData,
   });
 }
+
+//退出请求
+export function logoutAPI() {
+  return request({
+    url: "/api/backend/logout",
+    method: "GET",
+  })
+}
+
+//判断是否成功登录
+export function isLoginAPI() {
+  return request({
+    url: "/api/backend/islogin",
+    method: "GET"
+  })
+}

@@ -16,17 +16,16 @@ export const Test = () => {
     code: "246810",
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       const res = await getTestAPI();
-      setData(JSON.stringify(res.data));
+      setData(JSON.stringify(res.data.data));
       const res2 = await userTestAPI();
-      setUser(JSON.stringify(res2.data));
+      setUser(JSON.stringify(res2.data.data));
       const res3 = await loginAPI(formData);
-      setTest(JSON.stringify(res3.data));
+      setTest(JSON.stringify(res3.data.data));
       const res4 = await getUploadKeyAPI();
-      setKey(JSON.stringify(res4.data));
+      setKey(JSON.stringify(res4.data.data));
     };
     fetchData();
   }, []);
@@ -37,7 +36,7 @@ export const Test = () => {
       {user}
       <br />
       tetet:{test}
-      <br/>
+      <br />
       ceshi:{key}
     </div>
   );

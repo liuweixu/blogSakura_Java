@@ -11,6 +11,7 @@ import { Error } from "@/components/error";
 export const RouterBackend = () => {
   return (
     <Routes>
+      <Route path="/backend/login" element={<Login />} />
       <Route path="/backend/" element={<Layout />}>
         <Route path="home" element={<Home />} />
         <Route path="publish" element={<Publish />} />
@@ -18,7 +19,6 @@ export const RouterBackend = () => {
         <Route path="setting" element={<Setting />} />
         <Route path="test" element={<Test />} />
       </Route>
-      <Route path="/backend/login" element={<Login />} />
       <Route path="*" element={<Error />} />
     </Routes>
   );
