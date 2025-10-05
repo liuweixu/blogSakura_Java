@@ -31,6 +31,7 @@ import {
   Space,
   Breadcrumb,
   Radio,
+  Card,
   type UploadFile,
 } from "antd";
 import ReactQuill from "react-quill-new";
@@ -43,8 +44,8 @@ import { PlusOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  labelCol: { span: 1 },
+  wrapperCol: { span: 24 },
 };
 
 const tailLayout = {
@@ -244,7 +245,7 @@ export function PublishArticle() {
   }, [articleId, form, channelList]); // 添加channelList依赖
 
   return (
-    <div style={{ maxWidth: 800, marginLeft: 0 }}>
+    <div>
       {contextHolder}
       <Breadcrumb
         separator=">"
@@ -260,66 +261,75 @@ export function PublishArticle() {
         ]}
         style={{ marginBottom: "36px" }}
       />
-      <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-        <Form.Item name="title" label="标题" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="channel" label="类别" rules={[{ required: true }]}>
-          <Select allowClear placeholder="请选择文章类别">
-            {channelList.map((channel) => (
-              <Option key={channel.id} value={channel.name}>
-                {channel.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item name="content" label="内容" rules={[{ required: false }]}>
-          <ReactQuill
-            theme="snow"
-            className="publish-quill"
-            value={form.getFieldValue("content") || ""}
-            onChange={(value) => form.setFieldValue("content", value)}
-          />
-        </Form.Item>
-        <Form.Item label="封面">
-          <Form.Item name="image_type">
-            <Radio.Group onChange={onImageTypeChange}>
-              <Radio value={1}>单图</Radio>
-              <Radio value={0}>无图</Radio>
-            </Radio.Group>
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 20,
+          borderRadius: 12,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+        }}
+      >
+        <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
+          <Form.Item name="title" label="标题" rules={[{ required: true }]}>
+            <Input />
           </Form.Item>
-          {/**
-           * listType: 决定选择文件框的外观样式
-           * showUploadList: 是否展示已上传文件列表
-           */}
-          {imageType > 0 && (
-            <Upload
-              name="image"
-              listType="picture-card"
-              accept="image/*"
-              customRequest={customRequest}
-              showUploadList
-              maxCount={imageType}
-              onChange={onUploadChange}
-              fileList={fileValue}
-            >
-              <div>
-                <PlusOutlined />
-              </div>
-            </Upload>
-          )}
-        </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Space>
-            <Button type="primary" htmlType="submit">
-              提交
-            </Button>
-            <Button htmlType="button" onClick={onReset}>
-              重置
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
+          <Form.Item name="channel" label="类别" rules={[{ required: true }]}>
+            <Select allowClear placeholder="请选择文章类别">
+              {channelList.map((channel) => (
+                <Option key={channel.id} value={channel.name}>
+                  {channel.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item name="content" label="内容" rules={[{ required: true }]}>
+            <ReactQuill
+              theme="snow"
+              className="publish-quill"
+              value={form.getFieldValue("content") || ""}
+              onChange={(value) => form.setFieldValue("content", value)}
+            />
+          </Form.Item>
+          <Form.Item label="封面">
+            <Form.Item name="image_type">
+              <Radio.Group onChange={onImageTypeChange}>
+                <Radio value={1}>单图</Radio>
+                <Radio value={0}>无图</Radio>
+              </Radio.Group>
+            </Form.Item>
+            {/**
+             * listType: 决定选择文件框的外观样式
+             * showUploadList: 是否展示已上传文件列表
+             */}
+            {imageType > 0 && (
+              <Upload
+                name="image"
+                listType="picture-card"
+                accept="image/*"
+                customRequest={customRequest}
+                showUploadList
+                maxCount={imageType}
+                onChange={onUploadChange}
+                fileList={fileValue}
+              >
+                <div>
+                  <PlusOutlined />
+                </div>
+              </Upload>
+            )}
+          </Form.Item>
+          <Form.Item {...tailLayout}>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                提交
+              </Button>
+              <Button htmlType="button" onClick={onReset}>
+                重置
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 }

@@ -1,6 +1,27 @@
 import { Breadcrumb, Card } from "antd";
+import { BarChartOutlined } from "@ant-design/icons";
+import CountUp from "react-countup";
+import { Col, Row, Statistic } from "antd";
+import { useEffect, useState } from "react";
+import { getArticleHomeAPI } from "@/ui-frontend/apis/home";
+import { getChannelAPI } from "@/ui-backend/apis/article";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const formatter = (value: any) => <CountUp end={value} separator="," />;
 const App = () => {
+  // 统计文章数量和频道数量
+  const [articleCount, setArticleCount] = useState(0);
+  const [channelCount, setChannelCount] = useState(0);
+  useEffect(() => {
+    const getCount = async () => {
+      const resArticle = await getArticleHomeAPI();
+      setArticleCount(resArticle?.data.data.length);
+      const resChannel = await getChannelAPI();
+      setChannelCount(resChannel?.data.data.length);
+    };
+    getCount();
+  }, []);
+  console.log(articleCount, channelCount);
   return (
     <div>
       <Breadcrumb
@@ -12,15 +33,47 @@ const App = () => {
           },
         ]}
       />
-      <div>
-        <Card style={{ marginTop: 20 }}>
-          <img
-            src="https://api.r10086.com/樱道随机图片api接口.php?图片系列=动漫综合1"
-            alt="Image"
-            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </Card>
-      </div>
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 20,
+          borderRadius: 12,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+        }}
+        title={
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <BarChartOutlined style={{ color: "#1890ff", fontSize: 20 }} />
+            <span
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+                color: "#333",
+                fontFamily: "'KaiTi', 'KaiTi_GB2312', 'STKaiti', serif",
+              }}
+            >
+              统计信息
+            </span>
+          </div>
+        }
+      >
+        <Row gutter={16}>
+          <Col span={12}>
+            <Statistic
+              title="文章数量"
+              value={articleCount}
+              formatter={formatter}
+            />
+          </Col>
+          <Col span={12}>
+            <Statistic
+              title="频道数量"
+              value={channelCount}
+              precision={2}
+              formatter={formatter}
+            />
+          </Col>
+        </Row>
+      </Card>
     </div>
   );
 };

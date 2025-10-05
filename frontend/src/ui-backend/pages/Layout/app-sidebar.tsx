@@ -74,16 +74,16 @@ const App: React.FC = () => {
                   onClick: () => navigate("/backend/articlelist"),
                 },
                 {
+                  key: "/backend/channellist",
+                  icon: <UploadOutlined />,
+                  label: "频道列表",
+                  onClick: () => navigate("/backend/channellist"),
+                },
+                {
                   key: "/backend/setting",
                   icon: <UploadOutlined />,
                   label: "设置",
                   onClick: () => navigate("/backend/setting"),
-                },
-                {
-                  key: "/backend/test",
-                  icon: <UploadOutlined />,
-                  label: "测试",
-                  onClick: () => navigate("/backend/test"),
                 },
               ]}
             />

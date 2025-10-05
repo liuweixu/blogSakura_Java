@@ -166,7 +166,16 @@ export const Article = () => {
           },
         ]}
       />
-      <Card style={{ marginTop: 20 }} title="文章筛选">
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 20,
+          borderRadius: 12,
+          boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
+          fontFamily: "'KaiTi', 'KaiTi_GB2312', 'STKaiti', serif",
+        }}
+        title="文章筛选"
+      >
         <Form layout="inline" onFinish={onSelectChange}>
           <Form.Item label="频道" name="channel_id">
             <Select placeholder="请选择文章频道" style={{ width: 120 }}>
@@ -189,7 +198,13 @@ export const Article = () => {
       </Card>
       {/**表格区域 */}
       <Card
-        style={{ marginTop: 20 }}
+        style={{
+          width: "100%",
+          marginTop: 20,
+          borderRadius: 12,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+          fontFamily: "'KaiTi', 'KaiTi_GB2312', 'STKaiti', serif",
+        }}
         title={`根据筛选条件共查询到 ${count} 条结果：`}
       >
         <Table
