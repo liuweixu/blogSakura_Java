@@ -9,9 +9,9 @@ import org.example.blogsakura_java.pojo.ArticleUpdate;
 import java.util.List;
 
 public interface ArticleService {
-    List<Article> findArticleList(ArticleQuery articleQuery);
+    List<Article> getArticleList(ArticleQuery articleQuery);
 
-    List<Article> findHomeArticleList();
+    List<Article> getHomeArticleList();
 
     void deleteArticleById(String id);
 

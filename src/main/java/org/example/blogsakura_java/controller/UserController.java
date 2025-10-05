@@ -1,6 +1,5 @@
 package org.example.blogsakura_java.controller;
 
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.blogsakura_java.pojo.Result;

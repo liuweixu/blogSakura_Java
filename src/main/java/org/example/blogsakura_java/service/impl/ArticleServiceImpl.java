@@ -11,6 +11,7 @@ import org.example.blogsakura_java.pojo.ArticleUpdate;
 import org.example.blogsakura_java.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ChannelMapper channelMapper;
 
     @Override
-    public List<Article> findArticleList(ArticleQuery articleQuery) {
+    public List<Article> getArticleList(ArticleQuery articleQuery) {
         if (articleQuery == null || articleQuery.getChannelName().isEmpty()) {
             return articleMapper.getArticleList();
         } else {
@@ -35,11 +36,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> findHomeArticleList() {
+    public List<Article> getHomeArticleList() {
         return articleMapper.getArticleList();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteArticleById(String id){
         articleMapper.deleteArticleById(id);
     }
@@ -50,6 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertArticle(ArticleInsert articleInsert) {
         Article article = new Article();
         long id = IdWorker.getId(); //添加雪花算法的id
@@ -66,6 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateArticle(ArticleUpdate articleUpdate, String id) {
         Article article = new Article();
         article.setId(id);

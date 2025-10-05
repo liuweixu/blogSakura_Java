@@ -1,68 +1,77 @@
 package org.example.blogsakura_java;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.blogsakura_java.mapper.UserMapper;
+import org.example.blogsakura_java.pojo.Article;
 import org.example.blogsakura_java.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
-class BlogsakuraJavaApplicationTests {
+public class BlogsakuraJavaApplicationTests {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
         User user = new User();
         user.setMobile("18612345677");
         user.setCode("246810");
-        System.out.println(userMapper.getUserByMobile(user));
+        System.out.println(user);
     }
 
     @Test
-    void getJwtToken(){
-        Calendar instance = Calendar.getInstance();
-        // 默认30 s
-        instance.add(Calendar.SECOND, 30);
+    public void jdbcTest() throws Exception {
+        //1. 注册驱动
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-        // 头部map
-        Map<String, Object> headerMap = new HashMap<>();
-        headerMap.put("typ", "jwt");
-        headerMap.put("alg", "sha256");
+        //2. 获取数据库连接
+        String url="jdbc:mysql://127.0.0.1:3306/blog";
+        String username = "root";
+        String password = "12345678";
+        Connection connection = DriverManager.getConnection(url, username, password);
 
-        Map<String,Object> claims = new HashMap<>();
-        claims.put("id",1);
-        claims.put("username","Tom");
+        //3. 执行SQL
+        Statement statement = connection.createStatement();
+        String sql = "select * from article";
+        ResultSet resultSet = statement.executeQuery(sql);
 
-        String jwt =  JWT.create()
-                .withHeader(headerMap)      // 头部, 默认使用 sha256 算法
-                .withIssuer("liu")    // 签发者
-                .withIssuedAt(Instant.now())  // 签发时间
-                .withExpiresAt(instance.getTime())        // 有效时间
-                .withNotBefore(Instant.now())           // 定义某个时间前都不可用
-                .withJWTId("blogsakura")      // 唯一身份标识
-                .withClaim("claims", claims)
-                .sign(Algorithm.HMAC256("blogsakura"));
-        System.out.println(jwt);
+        List<Article> objects = new ArrayList<>();
+        //4. 处理SQL执行结果
+        while (resultSet.next()) {
+            String id = resultSet.getString("id");
+            String title = resultSet.getString("title");
+            String content = resultSet.getString("content");
+            Long channelId = resultSet.getLong("channel_id");
+            Integer imageType = resultSet.getInt("image_type");
+            String imageUrl = resultSet.getString("image_url");
+            String publishDate = resultSet.getString("publish_date");
+            String editDate = resultSet.getString("edit_date");
+            Article article = new Article(id, title, content, channelId, imageType, imageUrl, publishDate, editDate);
+            objects.add(article);
+        }
+
+        //5. 释放资源
+        statement.close();
+        connection.close();
+        resultSet.close();
+
+        //遍历集合
+        objects.forEach(System.out::println);
     }
 
     @Test
-    void verifyJwtToken(){
-        String token = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ4aWFvIHlhbmciLCJpYXQiOjE3NTk1NzYzMDQsImV4cCI6MTc1OTU3NjMzNCwic3ViIjoiZGFqaV95YW5nQDE2My5jb20iLCJhdWQiOlsid3d3LmJhaWR1LmNvbSIsInd3dy5nb29nbGUuY29tIl0sIm5iZiI6MTc1OTU3NjMwNCwianRpIjoiZGRkZGRkZGQiLCJ1c2VySWQiOjExLCJ1c2VybmFtZSI6Imd1ZXN0In0.aeBHOWw8JJ_uWSHSG12Oe6bSv478C6oTB_F0XEDiJ7c";
-        DecodedJWT xiaobai = JWT.require(Algorithm.HMAC256("xiaobai")).build().verify(token);
-        System.out.println(xiaobai.getClaim("userId"));
-        System.out.println(xiaobai.getClaim("username"));
+    public void test() throws Exception {
+        Class<?> classz = Class.forName("org.example.blogsakura_java.BlogsakuraJavaApplicationTests");
+        Method contextLoads = classz.getMethod("contextLoads");
+        contextLoads.invoke(classz.getDeclaredConstructor().newInstance());
     }
 }

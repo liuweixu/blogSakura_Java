@@ -16,9 +16,9 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PutMapping("/backend/articlelist")
-    public Result findArticleList(@RequestBody ArticleQuery articleQuery) {
+    public Result getArticleList(@RequestBody ArticleQuery articleQuery) {
         log.info("查询所有数据");
-        return Result.success(articleService.findArticleList(articleQuery));
+        return Result.success(articleService.getArticleList(articleQuery));
     }
 
     @DeleteMapping("/backend/article/{id}")
@@ -57,7 +57,7 @@ public class ArticleController {
     @GetMapping("/home")
     public Result getHomeArticleList(){
         log.info("获取前端首页的所有文章列表信息");
-        return Result.success(articleService.findHomeArticleList());
+        return Result.success(articleService.getHomeArticleList());
     }
 }
 
