@@ -55,14 +55,12 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{id}")
-    @Log
     public Result getHomeArticleById(@PathVariable String id){
         log.info("筛选id的文章");
         return Result.success(articleService.getArticleById(id));
     }
 
     @GetMapping("/home")
-    @Log
     public Result getHomeArticleList(){
         log.info("获取前端首页的所有文章列表信息");
         return Result.success(articleService.getHomeArticleList());

@@ -22,7 +22,6 @@ export const Channel = () => {
     };
     getChannelList();
   }, []);
-  console.log(articleList);
   // 列表头
   // 准备列数据
   // 定义状态枚举

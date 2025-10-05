@@ -3,7 +3,10 @@ package org.example.blogsakura_java.mapper;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.example.blogsakura_java.pojo.OperateLog;
+
+import java.util.List;
 
 @Mapper
 public interface OperateLogMapper {
@@ -14,4 +17,7 @@ public interface OperateLogMapper {
 
     @Delete("truncate table operate_log")
     public void deleteOperateLogs();
+
+    @Select("select * from operate_log")
+    public List<OperateLog> getOperateLogs();
 }
