@@ -2,6 +2,7 @@ package org.example.blogsakura_java.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.example.blogsakura_java.aop.Log;
 import org.example.blogsakura_java.pojo.Result;
 import org.example.blogsakura_java.pojo.User;
 import org.example.blogsakura_java.service.UserService;
@@ -16,6 +17,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/backend/login")
+    @Log
     public Result login(@RequestBody User user){
         log.info("获取登录信息:{}", user);
         User user_result = userService.getUserByMobile(user);

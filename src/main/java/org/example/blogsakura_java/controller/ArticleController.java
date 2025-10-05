@@ -3,6 +3,7 @@ package org.example.blogsakura_java.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.example.blogsakura_java.aop.Log;
 import org.example.blogsakura_java.pojo.*;
 import org.example.blogsakura_java.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,14 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PutMapping("/backend/articlelist")
+    @Log
     public Result getArticleList(@RequestBody ArticleQuery articleQuery) {
         log.info("查询所有数据");
         return Result.success(articleService.getArticleList(articleQuery));
     }
 
     @DeleteMapping("/backend/article/{id}")
+    @Log
     public Result deleteArticleById(@PathVariable String id) {
         log.info("删除id的文章");
         articleService.deleteArticleById(id);
@@ -29,12 +32,14 @@ public class ArticleController {
     }
 
     @GetMapping("/backend/article/{id}")
+    @Log
     public Result getArticleById(@PathVariable String id){
         log.info("筛选id的文章");
         return Result.success(articleService.getArticleById(id));
     }
 
     @PostMapping("/backend/article")
+    @Log
     public Result insertArticle(@RequestBody ArticleInsert articleInsert){
         log.info("插入文章");
         articleService.insertArticle(articleInsert);
@@ -42,6 +47,7 @@ public class ArticleController {
     }
 
     @PutMapping("/backend/article/{id}")
+    @Log
     public Result UpdateArticle(@RequestBody ArticleUpdate articleUpdate, @PathVariable String id){
         log.info("修改文章");
         articleService.updateArticle(articleUpdate, id);
@@ -49,12 +55,14 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{id}")
+    @Log
     public Result getHomeArticleById(@PathVariable String id){
         log.info("筛选id的文章");
         return Result.success(articleService.getArticleById(id));
     }
 
     @GetMapping("/home")
+    @Log
     public Result getHomeArticleList(){
         log.info("获取前端首页的所有文章列表信息");
         return Result.success(articleService.getHomeArticleList());

@@ -80,6 +80,12 @@ const App: React.FC = () => {
                   onClick: () => navigate("/backend/channellist"),
                 },
                 {
+                  key: "/backend/logging",
+                  icon: <UploadOutlined />,
+                  label: "日志记录",
+                  onClick: () => navigate("/backend/logging"),
+                },
+                {
                   key: "/backend/setting",
                   icon: <UploadOutlined />,
                   label: "设置",

@@ -7,6 +7,7 @@ import { Publish } from "@/ui-backend/pages/Publish";
 import { Setting } from "@/ui-backend/pages/Setting";
 import { Error } from "@/components/error";
 import { ChannelList } from "../pages/Channel";
+import { Logging } from "../pages/Logging";
 
 export const RouterBackend = () => {
   return (
@@ -18,6 +19,7 @@ export const RouterBackend = () => {
         <Route path="articlelist" element={<ArticleList />} />
         <Route path="setting" element={<Setting />} />
         <Route path="channellist" element={<ChannelList />} />
+        <Route path="logging" element={<Logging />} />
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>
