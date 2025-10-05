@@ -44,7 +44,7 @@ SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token
 1. 前后端分离部署，保证数据安全，遵循当下开发的流行原则。
 2. 可直接查看前端的首页和文章页。可通过登录后，查看后台界面。
 3. 新增AOP注解实现日志管理。
-4. 采用 Restful 风格的 API，代码遵循阿里巴巴开发规范，利于开发者学习。
+4. 采用 Restful 风格的 API。
 5. 引入随机图片API，实现背景的随机更换。
 6. 前端程序使用React、TypeScipt等，后端使用SpringBoot、MyBatis、Sa-Token
 等，代码清晰易懂，方便初学者学习。
