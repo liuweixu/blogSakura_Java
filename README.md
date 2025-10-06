@@ -82,6 +82,7 @@ npm run dev
 - [x] 添加权限控制
 - [ ] 引入Redis，处理好Redis与MYSQL的冲突。
 - [ ] 引入Nacos，更方便管理配置
+- [ ] 尝试自定义starer
 
 
 # 感谢
