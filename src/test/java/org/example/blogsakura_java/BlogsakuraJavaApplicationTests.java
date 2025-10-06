@@ -1,10 +1,14 @@
 package org.example.blogsakura_java;
+import org.example.blogsakura_java.controller.ArticleController;
+import org.example.blogsakura_java.controller.UserController;
 import org.example.blogsakura_java.mapper.UserMapper;
 import org.example.blogsakura_java.pojo.Article;
 import org.example.blogsakura_java.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -18,13 +22,17 @@ import java.util.List;
 public class BlogsakuraJavaApplicationTests {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserController userController;
+
+    @Autowired
+    private ApplicationContext applicationContext; // IOC对象
 
     @Test
     public void contextLoads() {
         User user = new User();
         user.setMobile("18612345677");
         user.setCode("246810");
+
         System.out.println(user);
     }
 
@@ -74,4 +82,17 @@ public class BlogsakuraJavaApplicationTests {
         Method contextLoads = classz.getMethod("contextLoads");
         contextLoads.invoke(classz.getDeclaredConstructor().newInstance());
     }
+
+
+
+    @Test
+    void testGetBean() {
+        ArticleController controller = applicationContext.getBean(ArticleController.class);
+        System.out.println(controller);
+
+        ArticleController articleController = (ArticleController) applicationContext.getBean("articleController");
+        System.out.println(articleController);
+    }
+
+
 }

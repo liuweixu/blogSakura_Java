@@ -7,6 +7,7 @@ import org.example.blogsakura_java.aop.Log;
 import org.example.blogsakura_java.pojo.*;
 import org.example.blogsakura_java.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
