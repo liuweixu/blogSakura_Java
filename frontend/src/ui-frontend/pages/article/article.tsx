@@ -3,9 +3,9 @@ import { getArticleById } from "@/ui-frontend/apis/article";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { marked } from "marked";
-import 'github-markdown-css/github-markdown.css';
-import './mainwrapper_style.css';
-import {getChannelById} from "@/ui-backend/apis/article.ts";
+import "github-markdown-css/github-markdown.css";
+import "./mainwrapper_style.css";
+import { getChannelById } from "@/ui-backend/apis/article.ts";
 
 function App() {
   const location = useLocation();
@@ -23,10 +23,10 @@ function App() {
         const res_channel = await getChannelById(channel_id.toString());
         const channel_name = res_channel.data.name;
         setData({
-            title: title,
-            content: content,
-            channel_name: channel_name
-        })
+          title: title,
+          content: content,
+          channel_name: channel_name,
+        });
       } catch (error) {
         console.error("获取文章列表失败:", error);
       }
@@ -37,7 +37,7 @@ function App() {
   return (
     //ArticleWrapper
     <div>
-      <div className="pt-[75px] bg-white" />
+      <div className="bg-white" />
       {/**ArticleTop */}
       <div className="relative overflow-hidden">
         <div className="bg-no-repeat bg-cover bg-center h-100 bg-origin-border">
@@ -65,16 +65,19 @@ function App() {
       </div>
       {/**MainWrapper 正文内容 */}
       <div className="min-h-[600px] max-w-[850px] p-[0_10px] ml-auto mr-auto pt-[50px] bg-white-80">
-        {data ?
-          <div className='flex-items'>
-            <div className='cell'>
-              <div className='entry-content'
-                id='content'
+        {data ? (
+          <div className="flex-items">
+            <div className="cell">
+              <div
+                className="entry-content"
+                id="content"
                 dangerouslySetInnerHTML={{ __html: marked(data.content) }}
               />
             </div>
-          </div> : <div>Loading...</div>
-        }
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     </div>
   );

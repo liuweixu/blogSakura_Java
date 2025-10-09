@@ -5,7 +5,7 @@ export const Banner = () => {
     //{/**注意上面要加入before选择器，让grid这个模糊图片盖上原来图片，从而形成新样式的背景图 */}
     <div
       id="banner-wrapper"
-      className="relative overflow-hidden h-auto before:content-[''] before:absolute before:inset-0 before:z-3 before:bg-fixed 
+      className="relative overflow-hidden h-auto z-0 before:content-[''] before:absolute before:inset-0 before:z-3 before:bg-fixed 
       before:bg-[url('statics/images/grid.png')]"
     >
       {/**三条波浪 */}

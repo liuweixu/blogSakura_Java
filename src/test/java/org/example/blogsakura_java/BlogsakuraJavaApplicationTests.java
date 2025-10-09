@@ -1,4 +1,5 @@
 package org.example.blogsakura_java;
+import com.google.gson.Gson;
 import org.example.blogsakura_java.controller.ArticleController;
 import org.example.blogsakura_java.controller.UserController;
 import org.example.blogsakura_java.mapper.UserMapper;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,6 +30,13 @@ public class BlogsakuraJavaApplicationTests {
 
     @Autowired
     private ApplicationContext applicationContext; // IOC对象
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
 
     @Test
     public void contextLoads() {
@@ -94,5 +105,20 @@ public class BlogsakuraJavaApplicationTests {
         System.out.println(articleController);
     }
 
+    @Test
+    void testTransisent() {
+        User user = new User();
+        user.setMobile("18612345677");
+        user.setCode("246810");
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        System.out.println(json);
+    }
+
+    @Test
+    void testRedis() {
+        redisTemplate.opsForValue().set("name", "liu");
+        System.out.println(redisTemplate.opsForValue().get("name"));
+    }
 
 }

@@ -12,7 +12,7 @@
 
 ## 技术栈
 ### 前端
-React（19版本）、TypeScript/JavaScript、Nodejs、Antd、HTML、CSS、MySQL、Tailwind CSS等。
+React（19版本）、TypeScript/JavaScript、Nodejs、Antd、Shadcn/ui、HTML、CSS、MySQL、Tailwind CSS等。
 ### 后端
 SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token
 
@@ -67,6 +67,20 @@ npm install
 ```
 npm run dev
 ```
+# 界面示意图
+## 前端
+![img.png](img.png)
+
+## 后端
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+
+![img_4.png](img_4.png)
+
+![img_5.png](img_5.png)
 
 # 未来改进计划
 
@@ -93,6 +107,7 @@ npm run dev
 - [黑马React笔记](https://blog.csdn.net/2301_80182418/article/details/145483587)
 - [Sa-Token官方文档](https://sa-token.cc/)
 - [SpringBoot中文文档](https://springdoc.cn/spring-boot/)
+- [さくらの白猫](https://2heng.xin/theme-sakura/)
 
 # 补充：技术栈选择说明
 ### antd 
