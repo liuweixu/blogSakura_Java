@@ -1,10 +1,13 @@
 package org.example.blogsakura_java;
+
 import com.google.gson.Gson;
+import jakarta.annotation.Resource;
 import org.example.blogsakura_java.controller.ArticleController;
 import org.example.blogsakura_java.controller.UserController;
 import org.example.blogsakura_java.mapper.UserMapper;
 import org.example.blogsakura_java.pojo.Article;
 import org.example.blogsakura_java.pojo.User;
+import org.example.blogsakura_java.service.ViewService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +24,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootTest
 public class BlogsakuraJavaApplicationTests {
@@ -31,11 +37,9 @@ public class BlogsakuraJavaApplicationTests {
     @Autowired
     private ApplicationContext applicationContext; // IOC对象
 
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private StringRedisTemplate redisTemplate;
 
 
     @Test
@@ -47,45 +51,45 @@ public class BlogsakuraJavaApplicationTests {
         System.out.println(user);
     }
 
-    @Test
-    public void jdbcTest() throws Exception {
-        //1. 注册驱动
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        //2. 获取数据库连接
-        String url="jdbc:mysql://127.0.0.1:3306/blog";
-        String username = "root";
-        String password = "12345678";
-        Connection connection = DriverManager.getConnection(url, username, password);
-
-        //3. 执行SQL
-        Statement statement = connection.createStatement();
-        String sql = "select * from article";
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        List<Article> objects = new ArrayList<>();
-        //4. 处理SQL执行结果
-        while (resultSet.next()) {
-            String id = resultSet.getString("id");
-            String title = resultSet.getString("title");
-            String content = resultSet.getString("content");
-            Long channelId = resultSet.getLong("channel_id");
-            Integer imageType = resultSet.getInt("image_type");
-            String imageUrl = resultSet.getString("image_url");
-            String publishDate = resultSet.getString("publish_date");
-            String editDate = resultSet.getString("edit_date");
-            Article article = new Article(id, title, content, channelId, imageType, imageUrl, publishDate, editDate);
-            objects.add(article);
-        }
-
-        //5. 释放资源
-        statement.close();
-        connection.close();
-        resultSet.close();
-
-        //遍历集合
-        objects.forEach(System.out::println);
-    }
+//    @Test
+//    public void jdbcTest() throws Exception {
+//        //1. 注册驱动
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//
+//        //2. 获取数据库连接
+//        String url = "jdbc:mysql://127.0.0.1:3306/blog";
+//        String username = "root";
+//        String password = "12345678";
+//        Connection connection = DriverManager.getConnection(url, username, password);
+//
+//        //3. 执行SQL
+//        Statement statement = connection.createStatement();
+//        String sql = "select * from article";
+//        ResultSet resultSet = statement.executeQuery(sql);
+//
+//        List<Article> objects = new ArrayList<>();
+//        //4. 处理SQL执行结果
+//        while (resultSet.next()) {
+//            String id = resultSet.getString("id");
+//            String title = resultSet.getString("title");
+//            String content = resultSet.getString("content");
+//            Long channelId = resultSet.getLong("channel_id");
+//            Integer imageType = resultSet.getInt("image_type");
+//            String imageUrl = resultSet.getString("image_url");
+//            String publishDate = resultSet.getString("publish_date");
+//            String editDate = resultSet.getString("edit_date");
+//            Article article = new Article(id, title, content, channelId, imageType, imageUrl, publishDate, editDate);
+//            objects.add(article);
+//        }
+//
+//        //5. 释放资源
+//        statement.close();
+//        connection.close();
+//        resultSet.close();
+//
+//        //遍历集合
+//        objects.forEach(System.out::println);
+//    }
 
     @Test
     public void test() throws Exception {
@@ -93,7 +97,6 @@ public class BlogsakuraJavaApplicationTests {
         Method contextLoads = classz.getMethod("contextLoads");
         contextLoads.invoke(classz.getDeclaredConstructor().newInstance());
     }
-
 
 
     @Test
@@ -119,6 +122,84 @@ public class BlogsakuraJavaApplicationTests {
     void testRedis() {
         redisTemplate.opsForValue().set("name", "liu");
         System.out.println(redisTemplate.opsForValue().get("name"));
+    }
+
+    @Resource
+    private ViewService viewService;
+
+
+    @Test
+    public void testConcurrentUpdateViews() throws InterruptedException {
+        String articleId = "761011475501289473";
+        redisTemplate.opsForValue().set(articleId, "10");
+
+        int threadCount = 300; // 模拟20个用户同时刷新阅读数
+        CountDownLatch latch = new CountDownLatch(threadCount);
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+
+        for (int i = 0; i < threadCount; i++) {
+            executor.submit(() -> {
+                try {
+                    Long current = Long.valueOf(redisTemplate.opsForValue().get(articleId));
+                    Long newView = current + 1;
+                    viewService.updateViews(articleId, newView);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        executor.shutdown();
+
+        String redisResult = redisTemplate.opsForValue().get(articleId);
+        Long dbResult = viewService.getViews(articleId);
+
+        System.out.println("Redis 最终值：" + redisResult);
+        System.out.println("数据库 最终值：" + dbResult);
+    }
+
+    @Test
+    public void testConcurrentReadWrite() throws InterruptedException {
+        String articleId = "761067900055326720";
+        redisTemplate.opsForValue().set(articleId, "100");
+
+        int readers = 10;
+        int writers = 5;
+        CountDownLatch latch = new CountDownLatch(readers + writers);
+        ExecutorService executor = Executors.newFixedThreadPool(15);
+
+        // 模拟多个读线程
+        for (int i = 0; i < readers; i++) {
+            executor.submit(() -> {
+                try {
+                    Long v = viewService.getViews(articleId);
+                    System.out.println(Thread.currentThread().getName() + " 读：" + v);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        // 模拟多个写线程
+        for (int i = 0; i < writers; i++) {
+            executor.submit(() -> {
+                try {
+                    Long current = Long.valueOf(redisTemplate.opsForValue().get(articleId));
+                    Long newView = current + 10;
+                    viewService.updateViews(articleId, newView);
+                    System.out.println(Thread.currentThread().getName() + " 写：" + newView);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        executor.shutdown();
+
+        System.out.println("最终 Redis：" + redisTemplate.opsForValue().get(articleId));
+        System.out.println("最终 DB：" + viewService.getViews(articleId));
     }
 
 }
