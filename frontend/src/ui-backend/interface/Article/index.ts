@@ -8,6 +8,7 @@ export interface ArticleItem {
   image_url: string;
   image_type: string;
   publish_date: string;
+  view: number;
 }
 
 // 文章内容接口

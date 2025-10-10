@@ -18,7 +18,6 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PutMapping("/backend/articlelist")
-    @Log
     public Result getArticleList(@RequestBody ArticleQuery articleQuery) {
         log.info("查询所有数据");
         return Result.success(articleService.getArticleList(articleQuery));

@@ -20,7 +20,6 @@ public class ChannelController {
     private ChannelService channelService;
 
     @GetMapping("/backend/channels")
-    @Log
     public Result getChannels() {
         return Result.success(channelService.getChannels());
     }

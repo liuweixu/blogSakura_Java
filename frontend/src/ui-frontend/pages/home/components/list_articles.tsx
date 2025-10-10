@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 import "./list_articles.css";
 import { Pagination } from "antd";
 
-
 export function ListWrapper() {
   //处理分页信息
   const [currentPage, setCurrentPage] = useState(1);
   const onPageChange = (page: number) => {
     setCurrentPage(page);
-  }
+  };
   const [count, setCount] = useState(0);
   const pageSize = 10;
 
+  // 获取文章列表
   const [data, setData] = useState<ArticleItem[]>([]);
   useEffect(() => {
     const getArticleList = async () => {
@@ -22,7 +22,12 @@ export function ListWrapper() {
         const res = await getArticleHomeAPI();
         // 确保data是数组，否则使用空数组
         setCount(res.data.data.length);
-        setData(res.data.data.slice((currentPage - 1) * pageSize, currentPage * pageSize)); // 注意这个，后台上因为添加拦截中，加上res.data，而这个是没加上，所以要多一个data
+        setData(
+          res.data.data.slice(
+            (currentPage - 1) * pageSize,
+            currentPage * pageSize
+          )
+        ); // 注意这个，后台上因为添加拦截中，加上res.data，而这个是没加上，所以要多一个data
       } catch (error) {
         console.error("获取文章列表失败:", error);
       }
@@ -30,16 +35,19 @@ export function ListWrapper() {
     getArticleList();
   }, [currentPage]);
 
-  const Class = ['blog-item post-list-show left', 'blog-item post-list-show right'];
+  const Class = [
+    "blog-item post-list-show left",
+    "blog-item post-list-show right",
+  ];
 
   //对数据库的图像信息进行一定的处理
   const imageGet = (image_url: string) => {
     if (image_url == null) {
-      return "/statics/images/list_14.png"
+      return "/statics/images/list_14.png";
     } else {
       return "https://" + image_url;
     }
-  }
+  };
 
   function list_articles() {
     return (
@@ -47,15 +55,13 @@ export function ListWrapper() {
       <div id="blog-list">
         {data.map((invoice, index) => {
           return (
-            <div
-              className={Class[index % Class.length]}
-              key={invoice.id}
-            >
+            <div className={Class[index % Class.length]} key={invoice.id}>
               <div
-                className={`${index % 2 === 0
-                  ? "float-right w-[55%] overflow-hidden"
-                  : "float-left w-[55%] overflow-hidden"
-                  }`}
+                className={`${
+                  index % 2 === 0
+                    ? "float-right w-[55%] overflow-hidden"
+                    : "float-left w-[55%] overflow-hidden"
+                }`}
               >
                 {/**对图片处理 */}
                 <Link
@@ -73,10 +79,11 @@ export function ListWrapper() {
                 </Link>
               </div>
               <div
-                className={`relative inline-block w-2/5 mt-7.5 mr-2.5 mb-2.5 ${index % 2 === 0
-                  ? "float-right pr-8 pl-0 text-left"
-                  : "float-left pl-8 pr-0 text-right"
-                  }`}
+                className={`relative inline-block w-2/5 mt-7.5 mr-2.5 mb-2.5 ${
+                  index % 2 === 0
+                    ? "float-right pr-8 pl-0 text-left"
+                    : "float-left pl-8 pr-0 text-right"
+                }`}
               >
                 <div className="text-[#888] text-sm">
                   <i className="iconfont icon-time mr-1.5 text-[#989898] text-sm" />
@@ -91,12 +98,12 @@ export function ListWrapper() {
                 <div className="text-[#888] text-xs">
                   <span>
                     <i className="iconfont icon-attention_light mr-1.5 text-[#989898] text-xs" />
-                    热度
+                    热度 : {invoice.view}
                   </span>
-                  <span className="mx-2.5">
+                  {/* <span className="mx-2.5">
                     <i className="iconfont icon-icon_mark mr-1.5 text-[#989898] text-xs" />
                     评论
-                  </span>
+                  </span> */}
                   {invoice.channel_name && (
                     <span>
                       <i className="iconfont icon-icon_file mr-1.5 text-[#989898] text-xs" />
@@ -106,14 +113,18 @@ export function ListWrapper() {
                 </div>
                 {/**显示文字内容 */}
                 <div className="relative w-full my-2 z-50 text-black/66">
-                  <p className="overflow-hidden my-5 leading-6 line-clamp-3"
-                    style={{ fontSize: "16px" }}>
+                  <p
+                    className="overflow-hidden my-5 leading-6 line-clamp-3"
+                    style={{ fontSize: "16px" }}
+                  >
                     {invoice.content.replace(/<[^>]+>/g, "")}
                   </p>
                   <div>
                     <Link to={"/article/" + invoice.id}>
-                      <i className="iconfont icon-icon_caidan text-[#666] hover:text-[#fe9600]"
-                        style={{ fontSize: "30px" }} />
+                      <i
+                        className="iconfont icon-icon_caidan text-[#666] hover:text-[#fe9600]"
+                        style={{ fontSize: "30px" }}
+                      />
                     </Link>
                   </div>
                 </div>
@@ -124,7 +135,6 @@ export function ListWrapper() {
       </div>
     );
   }
-
 
   return (
     <div className="w-full">

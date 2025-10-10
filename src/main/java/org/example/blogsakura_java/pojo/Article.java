@@ -1,4 +1,5 @@
 package org.example.blogsakura_java.pojo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,5 @@ public class Article {
     private String imageUrl;
     private String publishDate;
     private String editDate;
+    private Long view;
 }

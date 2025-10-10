@@ -29,4 +29,9 @@ public interface ArticleMapper {
             "values (#{id}, #{title}, #{content}, #{channelId}, #{imageType}, #{imageUrl}, #{publishDate}, #{editDate})")
     public void insertArticle(Article article);
 
+    @Select("select view from article where id = #{id}")
+    public Long getViewById(String id);
+
+    @Update("update article set view = #{view} where id = #{id}")
+    public void updateViewById(String id, Long view);
 }

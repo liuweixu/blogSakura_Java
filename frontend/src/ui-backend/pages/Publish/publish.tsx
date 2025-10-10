@@ -269,7 +269,14 @@ export function PublishArticle() {
           boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
         }}
       >
-        <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
+        <Form
+          {...layout}
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 20 }}
+        >
           <Form.Item name="title" label="标题" rules={[{ required: true }]}>
             <Input />
           </Form.Item>

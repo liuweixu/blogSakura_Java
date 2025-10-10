@@ -1,5 +1,9 @@
 import type { ArticleContent } from "@/ui-backend/interface/Article";
-import { getArticleById } from "@/ui-frontend/apis/article";
+import {
+  getArticleById,
+  getArticleViewsById,
+  updateArticleViewsById,
+} from "@/ui-frontend/apis/article";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { marked } from "marked";
@@ -11,11 +15,14 @@ function App() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [data, setData] = useState<ArticleContent>();
+  // 计算文章阅读数
+  const [view, SetView] = useState(0);
+
   useEffect(() => {
     const getArticleContent = async () => {
       try {
         const res = await getArticleById(id);
-        console.log(res.data.data); // 打印响应数据，以便检查是否正确获取了文章列表
+        // console.log(res.data.data); // 打印响应数据，以便检查是否正确获取了文章列表
         // 确保data是数组，否则使用空数组
         const title = res.data.data.title;
         const content = res.data.data.content;
@@ -33,7 +40,18 @@ function App() {
     };
     getArticleContent();
   }, [id]);
-  console.log(data);
+
+  useEffect(() => {
+    const getViews = async () => {
+      const res = await getArticleViewsById(id);
+      SetView(res?.data + 1);
+      await updateArticleViewsById(id, res?.data + 1);
+    };
+    getViews();
+  }, []);
+
+  console.log("views，", view);
+
   return (
     //ArticleWrapper
     <div>
