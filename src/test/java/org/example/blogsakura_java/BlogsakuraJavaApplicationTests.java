@@ -24,9 +24,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 @SpringBootTest
 public class BlogsakuraJavaApplicationTests {
@@ -40,6 +38,8 @@ public class BlogsakuraJavaApplicationTests {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
 
     @Test
@@ -131,32 +131,33 @@ public class BlogsakuraJavaApplicationTests {
     @Test
     public void testConcurrentUpdateViews() throws InterruptedException {
         String articleId = "761011475501289473";
-        redisTemplate.opsForValue().set(articleId, "10");
+        redisTemplate.opsForValue().set(articleId, "100");
 
-        int threadCount = 300; // 模拟20个用户同时刷新阅读数
-        CountDownLatch latch = new CountDownLatch(threadCount);
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
-
+        int threadCount = 100; // 模拟20个用户同时刷新阅读数
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(threadCount,
+                threadCount * 2 + 1,
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(1000));
         for (int i = 0; i < threadCount; i++) {
-            executor.submit(() -> {
+            executor.execute(() -> {
                 try {
-                    Long current = Long.valueOf(redisTemplate.opsForValue().get(articleId));
+                    Long current = viewService.getViews(articleId);
                     Long newView = current + 1;
                     viewService.updateViews(articleId, newView);
-                } finally {
-                    latch.countDown();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }
 
-        latch.await();
-        executor.shutdown();
 
         String redisResult = redisTemplate.opsForValue().get(articleId);
         Long dbResult = viewService.getViews(articleId);
 
         System.out.println("Redis 最终值：" + redisResult);
         System.out.println("数据库 最终值：" + dbResult);
+        executor.shutdown();
     }
 
     @Test
@@ -164,10 +165,10 @@ public class BlogsakuraJavaApplicationTests {
         String articleId = "761067900055326720";
         redisTemplate.opsForValue().set(articleId, "100");
 
-        int readers = 10;
+        int readers = 100;
         int writers = 5;
         CountDownLatch latch = new CountDownLatch(readers + writers);
-        ExecutorService executor = Executors.newFixedThreadPool(15);
+        ExecutorService executor = Executors.newFixedThreadPool(100);
 
         // 模拟多个读线程
         for (int i = 0; i < readers; i++) {
@@ -201,5 +202,6 @@ public class BlogsakuraJavaApplicationTests {
         System.out.println("最终 Redis：" + redisTemplate.opsForValue().get(articleId));
         System.out.println("最终 DB：" + viewService.getViews(articleId));
     }
+
 
 }
