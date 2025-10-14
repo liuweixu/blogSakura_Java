@@ -43,9 +43,9 @@ function App() {
 
   useEffect(() => {
     const getViews = async () => {
+      await updateArticleViewsById(id);
       const res = await getArticleViewsById(id);
-      SetView(res?.data + 1);
-      await updateArticleViewsById(id, res?.data + 1);
+      SetView(res?.data);
     };
     getViews();
   }, []);

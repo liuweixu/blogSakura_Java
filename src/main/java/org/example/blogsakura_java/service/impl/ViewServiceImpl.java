@@ -25,28 +25,29 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public Long getViews(String id) {
-        String result = stringRedisTemplate.opsForValue().get(id);
-        if (result == null || result.isBlank() || result.equalsIgnoreCase("null")) {
-            Long view = articleMapper.getViewById(id);
-            // 对非热门文章设置过期时间
-            if (view > 100) {
-                stringRedisTemplate.opsForValue().set(id, String.valueOf(view));
+        synchronized (this) {
+            String result = stringRedisTemplate.opsForValue().get(id);
+            if (result == null || result.isBlank() || result.equalsIgnoreCase("null")) {
+                Long view = articleMapper.getViewById(id);
+                // 对非热门文章设置过期时间
+                if (view > 100) {
+                    stringRedisTemplate.opsForValue().set(id, String.valueOf(view));
+                } else {
+                    stringRedisTemplate.opsForValue().set(id, String.valueOf(view), Duration.ofHours(10));
+                }
+                return view;
             } else {
-                stringRedisTemplate.opsForValue().set(id, String.valueOf(view), Duration.ofHours(10));
+                return Long.valueOf(result);
             }
-            return view;
-        } else {
-            return Long.valueOf(result);
         }
     }
 
     @Override
-    public void updateViews(String id, Long view) {
-        if (view > 100) {
-            stringRedisTemplate.opsForValue().set(id, String.valueOf(view));
-        } else {
-            stringRedisTemplate.opsForValue().set(id, String.valueOf(view), Duration.ofHours(10));
+    public void updateViews(String id) {
+        synchronized (this) {
+            stringRedisTemplate.opsForValue().increment(id);
+            Long view = Long.valueOf(stringRedisTemplate.opsForValue().get(id));
+            articleMapper.updateViewById(id, view);
         }
-        articleMapper.updateViewById(id, view);
     }
 }

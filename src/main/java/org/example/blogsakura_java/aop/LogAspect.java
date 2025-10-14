@@ -20,7 +20,15 @@ public class LogAspect {
     @Autowired
     private OperateLogMapper operateLogMapper;
 
+    /**
+     * PointCut切入点
+     * 通知+切入点=切面
+     */
     @Around("@annotation(org.example.blogsakura_java.aop.Log)")
+    /**
+     * JoinPoint是连接点，比如删除文章等业务方法就是JoinPoint.
+     * Advice 通知，recordLog就是advice。
+     */
     public Object recordLog(ProceedingJoinPoint joinPoint) throws Throwable {
         // 获取雪花算法
         Long id = IdWorker.getId();

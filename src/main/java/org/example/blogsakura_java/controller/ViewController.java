@@ -15,11 +15,13 @@ public class ViewController {
 
     @GetMapping("/article/views/{id}")
     public Long getViews(@PathVariable String id) {
+        log.info("读取文章：{}", id);
         return viewService.getViews(id);
     }
 
     @PutMapping("/article/views/{id}")
-    public void updateViews(@PathVariable String id, @RequestBody ViewRequest viewRequest) {
-        viewService.updateViews(id, viewRequest.getView());
+    public void updateViews(@PathVariable String id) {
+        log.info("更新文章：{}", id);
+        viewService.updateViews(id);
     }
 }

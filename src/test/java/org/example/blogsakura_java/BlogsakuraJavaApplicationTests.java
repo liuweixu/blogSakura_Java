@@ -130,11 +130,12 @@ public class BlogsakuraJavaApplicationTests {
 
     @Test
     public void testConcurrentUpdateViews() throws InterruptedException {
-        String articleId = "761011475501289473";
-        redisTemplate.opsForValue().set(articleId, "100");
+        String articleId = "761068062978871296";
+        redisTemplate.opsForValue().set(articleId, "0");
+
 
         int threadCount = 100; // 模拟20个用户同时刷新阅读数
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(threadCount,
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(threadCount * 2,
                 threadCount * 2 + 1,
                 60L,
                 TimeUnit.SECONDS,
@@ -143,21 +144,21 @@ public class BlogsakuraJavaApplicationTests {
             executor.execute(() -> {
                 try {
                     Long current = viewService.getViews(articleId);
-                    Long newView = current + 1;
-                    viewService.updateViews(articleId, newView);
+                    viewService.updateViews(articleId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
         }
 
+        executor.shutdown();
 
-        String redisResult = redisTemplate.opsForValue().get(articleId);
+
+        Thread.sleep(3000);
         Long dbResult = viewService.getViews(articleId);
-
+        String redisResult = redisTemplate.opsForValue().get(articleId);
         System.out.println("Redis 最终值：" + redisResult);
         System.out.println("数据库 最终值：" + dbResult);
-        executor.shutdown();
     }
 
     @Test
@@ -188,7 +189,7 @@ public class BlogsakuraJavaApplicationTests {
                 try {
                     Long current = Long.valueOf(redisTemplate.opsForValue().get(articleId));
                     Long newView = current + 10;
-                    viewService.updateViews(articleId, newView);
+                    viewService.updateViews(articleId);
                     System.out.println(Thread.currentThread().getName() + " 写：" + newView);
                 } finally {
                     latch.countDown();
