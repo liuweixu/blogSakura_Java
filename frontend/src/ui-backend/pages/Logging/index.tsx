@@ -1,5 +1,7 @@
 import { LoggingPage } from "./logging";
 
-export function Logging() {
+function Logging() {
   return <LoggingPage />;
 }
+
+export default Logging;

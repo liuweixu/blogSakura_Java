@@ -1,5 +1,7 @@
 import { PublishArticle } from "./publish";
 
-export function Publish() {
+function Publish() {
   return <PublishArticle />;
 }
+
+export default Publish;

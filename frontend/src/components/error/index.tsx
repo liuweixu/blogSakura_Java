@@ -1,5 +1,7 @@
 import ErrorPage from "./error";
 
-export const Error = () => {
+const Error = () => {
   return <ErrorPage />;
 };
+
+export default Error;

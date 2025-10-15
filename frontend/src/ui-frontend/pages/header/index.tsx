@@ -1,9 +1,11 @@
 import HeaderPage from "./header";
 
-export const Header = () => {
+const Header = () => {
   return (
     <div>
       <HeaderPage />
     </div>
   );
 };
+
+export default Header;

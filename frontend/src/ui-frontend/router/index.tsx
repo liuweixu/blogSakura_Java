@@ -1,9 +1,12 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { HomeTest } from "@/ui-frontend/pages/hometest";
-import { Home } from "@/ui-frontend/pages/home";
-import { Article } from "@/ui-frontend/pages/article";
-import { Header } from "@/ui-frontend/pages/header";
-import { Error } from "@/components/error";
+import { lazy } from "react";
+import { Suspense } from "react";
+
+// 懒加载组件
+const Home = lazy(() => import("@/ui-frontend/pages/home"));
+const Article = lazy(() => import("@/ui-frontend/pages/article"));
+const Header = lazy(() => import("@/ui-frontend/pages/header"));
+const Error = lazy(() => import("@/components/error"));
 
 export const RouterFrontend = () => {
   const location = useLocation();
@@ -19,10 +22,30 @@ export const RouterFrontend = () => {
     <>
       {showHeader && <Header />}
       <Routes>
-        <Route path="/test" element={<HomeTest />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/article/:id" element={<Article />} />
-        <Route path="*" element={<Error />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={"加载中"}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/article/:id"
+          element={
+            <Suspense fallback={"加载中"}>
+              <Article />
+            </Suspense>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={"加载中"}>
+              <Error />
+            </Suspense>
+          }
+        />
       </Routes>
     </>
   );

@@ -1,6 +1,6 @@
 import { LoginPage } from "./login-page";
 
-export function Login() {
+function Login() {
   return (
     <div className="grid min-h-svh lg:grid-cols-[4fr_1fr]">
       <div className="relative hidden bg-muted lg:block">
@@ -18,3 +18,5 @@ export function Login() {
     </div>
   );
 }
+
+export default Login;

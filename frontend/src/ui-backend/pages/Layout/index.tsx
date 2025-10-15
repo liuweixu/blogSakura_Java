@@ -1,9 +1,11 @@
 import AppSidebar from "./app-sidebar";
 
-export function Layout() {
+function Layout() {
   return (
     <div>
       <AppSidebar />
     </div>
   );
 }
+
+export default Layout;

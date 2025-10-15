@@ -1,5 +1,7 @@
 import { Channel } from "./channel";
 
-export const ChannelList = () => {
+const ChannelList = () => {
   return <Channel />;
 };
+
+export default ChannelList;

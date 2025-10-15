@@ -1,5 +1,7 @@
 import { Article } from "./article";
 
-export function ArticleList() {
+function ArticleList() {
   return <Article />;
 }
+
+export default ArticleList;

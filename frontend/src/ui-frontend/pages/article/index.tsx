@@ -1,5 +1,7 @@
 import ArticlePage from "./article";
 
-export const Article = () => {
+const Article = () => {
   return <ArticlePage />;
 };
+
+export default Article;
