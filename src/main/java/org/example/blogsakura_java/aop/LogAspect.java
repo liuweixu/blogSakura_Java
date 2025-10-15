@@ -63,6 +63,8 @@ public class LogAspect {
             operateName = "清空日志";
         } else if (methodName.equals("getOperateLogs")) {
             operateName = "获取日志列表";
+        } else if (methodName.equals("handleNotLogin")) {
+            operateName = "未登录异常";
         }
 
         //开始计算时间
