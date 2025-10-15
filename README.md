@@ -65,7 +65,7 @@ SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token
 7. 前端程序使用React、TypeScipt等，后端使用SpringBoot、MyBatis、Sa-Token
    等，代码清晰易懂，方便初学者学习。
 8. 阅读数等高频数值使用Redis缓存，并针对冷数据采取一定的过期策略处理，保证系统的稳定性。
-9. 在Redis与MySQL的读写中，引入锁机制，保证在并发测试场景下，能够保持数据一致性，并且数据未丢失。
+9. 在Redis与MySQL的读写中，引入Lua脚本，保证在并发测试场景下，能够保持原子性，并且数据未丢失。
 
 ## 使用方式
 

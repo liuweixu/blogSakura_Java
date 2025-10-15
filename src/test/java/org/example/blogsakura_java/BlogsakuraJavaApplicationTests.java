@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
@@ -23,6 +24,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -38,8 +40,6 @@ public class BlogsakuraJavaApplicationTests {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
 
 
     @Test
@@ -120,21 +120,19 @@ public class BlogsakuraJavaApplicationTests {
 
     @Test
     void testRedis() {
-        redisTemplate.opsForValue().set("name", "liu");
-        System.out.println(redisTemplate.opsForValue().get("name"));
+        System.out.println(redisTemplate.opsForValue().get("2"));
     }
 
     @Resource
     private ViewService viewService;
 
-
     @Test
     public void testConcurrentUpdateViews() throws InterruptedException {
-        String articleId = "761068062978871296";
+        String articleId = "761125187595800577";
         redisTemplate.opsForValue().set(articleId, "0");
 
-
-        int threadCount = 100; // 模拟20个用户同时刷新阅读数
+        int threadCount = 1000; // 模拟20个用户同时刷新阅读数
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(threadCount * 2,
                 threadCount * 2 + 1,
                 60L,
@@ -145,12 +143,14 @@ public class BlogsakuraJavaApplicationTests {
                 try {
                     Long current = viewService.getViews(articleId);
                     viewService.updateViews(articleId);
+                    countDownLatch.countDown();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
         }
 
+        countDownLatch.await();
         executor.shutdown();
 
 
@@ -204,5 +204,19 @@ public class BlogsakuraJavaApplicationTests {
         System.out.println("最终 DB：" + viewService.getViews(articleId));
     }
 
+    @Test
+    void testLua() {
+        String luascipts = "local key = KEYS[1]\n" +
+                "local current = redis.call(\"GET\", key)\n" +
+                "if current == false then\n" +
+                "    redis.call(\"SET\", key, 1)\n" +
+                "else\n" +
+                "    redis.call(\"INCR\", key)\n" +
+                "    return tonumber(current) + 1\n" +
+                "end";
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(luascipts, Long.class);
+        Long result = redisTemplate.execute(redisScript, Collections.singletonList("number"));
+        System.out.println(result);
+    }
 
 }
