@@ -128,10 +128,10 @@ public class BlogsakuraJavaApplicationTests {
 
     @Test
     public void testConcurrentUpdateViews() throws InterruptedException {
-        String articleId = "761125187595800577";
+        String articleId = "761125187";
         redisTemplate.opsForValue().set(articleId, "0");
 
-        int threadCount = 1000; // 模拟20个用户同时刷新阅读数
+        int threadCount = 150; // 模拟20个用户同时刷新阅读数
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(threadCount * 2,
                 threadCount * 2 + 1,

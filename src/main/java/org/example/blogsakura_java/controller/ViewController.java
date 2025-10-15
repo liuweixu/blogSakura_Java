@@ -2,6 +2,7 @@ package org.example.blogsakura_java.controller;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.example.blogsakura_java.configure.ArticleBloomFilter;
 import org.example.blogsakura_java.pojo.ViewRequest;
 import org.example.blogsakura_java.service.ViewService;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -13,6 +14,7 @@ public class ViewController {
 
     @Resource
     private ViewService viewService;
+    
 
     @GetMapping("/article/views/{id}")
     public Long getViews(@PathVariable String id) {

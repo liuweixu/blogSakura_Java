@@ -2,6 +2,7 @@ package org.example.blogsakura_java.service.impl;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.example.blogsakura_java.configure.ArticleBloomFilter;
 import org.example.blogsakura_java.mapper.ArticleMapper;
 import org.example.blogsakura_java.service.ViewService;
 import org.springframework.cache.annotation.CacheEvict;
@@ -28,6 +29,9 @@ public class ViewServiceImpl implements ViewService {
 
     private final DefaultRedisScript<Long> incrementScript;
 
+    @Resource
+    private ArticleBloomFilter articleBloomFilter;
+
     public ViewServiceImpl() {
         incrementScript = new DefaultRedisScript<>();
         incrementScript.setResultType(Long.class);
@@ -51,6 +55,11 @@ public class ViewServiceImpl implements ViewService {
      */
     @Override
     public Long getViews(String id) {
+        if (!articleBloomFilter.mightExist(id)) {
+            log.warn("文章id {} 不存在", id);
+            return null;
+        }
+
         String result = stringRedisTemplate.opsForValue().get(id);
         if (result == null || result.isBlank() || result.equalsIgnoreCase("null")) {
             Long view = articleMapper.getViewById(id);
@@ -68,6 +77,12 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public void updateViews(String id) {
+        if (!articleBloomFilter.mightExist(id)) {
+            log.warn("文章id {} 不存在", id);
+            return;
+        }
+
+
         Long view = stringRedisTemplate.execute(
                 incrementScript,
                 Collections.singletonList(id),

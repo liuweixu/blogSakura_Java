@@ -34,4 +34,7 @@ public interface ArticleMapper {
 
     @Update("update article set view = #{view} where id = #{id}")
     public void updateViewById(String id, Long view);
+
+    @Select("select id from article")
+    public List<String> getId();
 }
