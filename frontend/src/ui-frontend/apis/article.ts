@@ -17,10 +17,11 @@ export function getArticleViewsById(id: string) {
 }
 
 //3. 更新文章id的阅读数
-export function updateArticleViewsById(id: string) {
+export function updateArticleViewsById(id: string, view: number) {
   return request({
     url: `/api/article/views/${id}`,
-    method: "PUT"
+    method: "PUT",
+    data: {view: view}
   })
 }
 

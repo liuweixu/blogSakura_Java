@@ -28,9 +28,9 @@ public class ViewController {
     }
 
     @PutMapping("/article/views/{id}")
-    public void updateViews(@PathVariable String id) {
+    public void updateViews(@PathVariable String id, @RequestBody ViewRequest viewRequest) {
         log.info("更新文章阅读数：{}", id);
-        viewService.updateViews(id);
+        viewService.updateViews(id, viewRequest.getView());
         rabbitTemplate.convertAndSend(RabbitMQArticleConstants.ARTICLE_EXCHANGE, RabbitMQArticleConstants.ARTICLE_INSERT_KEY, id);
     }
 }

@@ -44,8 +44,10 @@ public class ViewServiceImpl implements ViewService {
                         "if not value then\n" +
                         "    redis.call(\"SET\", key, defaultValue, \"EX\", expireSeconds)\n" +
                         "else\n" +
-                        "    value = redis.call(\"INCR\", key)\n" +
-                        "    return value\n" +
+                        "    local num = tonumber(value)\n" +
+                        "    num = num + 1\n" +
+                        "    redis.call(\"SET\", key, num)\n" +
+                        "    return num\n" +
                         "end"
         );
     }
@@ -76,20 +78,20 @@ public class ViewServiceImpl implements ViewService {
     }
 
     @Override
-    public void updateViews(String id) {
+    public void updateViews(String id, Long view) {
         if (!articleBloomFilter.mightExist(id)) {
             log.warn("文章id {} 不存在", id);
             return;
         }
 
 
-        Long view = stringRedisTemplate.execute(
+        Long result = stringRedisTemplate.execute(
                 incrementScript,
                 Collections.singletonList(id),
-                "0",
+                String.valueOf(view),
                 "360000"
         );
-        articleMapper.updateViewById(id, view);
+        articleMapper.updateViewById(id, result);
     }
 
 }

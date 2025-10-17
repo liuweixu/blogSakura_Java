@@ -11,6 +11,8 @@ local value = redis.call("GET", key)
 if not value then
     redis.call("SET", key, defaultValue, "EX", expireSeconds)
 else
-    value = redis.call("INCR", key)
-    return value
+    local num = tonumber(value)
+    num = num + 1
+    redis.call("SET", key, num)
+    return num
 end
