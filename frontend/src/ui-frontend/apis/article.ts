@@ -23,3 +23,12 @@ export function updateArticleViewsById(id: string) {
     method: "PUT"
   })
 }
+
+//4. 获取文章的ES全文查询结果
+export function searchArticleDoc(keyword: string) {
+  return request({
+    url: '/api/search',
+    method: 'POST',
+    data: {keyword: keyword}
+  })
+}

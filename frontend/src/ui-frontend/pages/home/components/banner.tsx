@@ -41,11 +41,11 @@ export const Banner = () => {
 
       {/**TODO 顶部向下动画 尚未添加事件 待定 */}
       <div id="header-top-down" className=""></div>
-      {/**内容模块 Center Content*/}
+      {/**内容模块 Center Content https://api.mtyqx.cn/api/random.php */}
       <div
         id="center"
         className="w-full h-screen bg-center-top bg-fixed bg-no-repeat bg-cover -z-10
-          bg-[url('https://api.mtyqx.cn/api/random.php')]"
+          bg-[url('https://api.r10086.com/樱道随机图片api接口.php?图片系列=风景系列3')]"
       >
         <div
           id="focus-info"

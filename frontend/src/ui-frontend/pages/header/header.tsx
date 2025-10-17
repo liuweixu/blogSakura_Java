@@ -1,5 +1,6 @@
 import { Affix } from "antd";
 import { Link } from "react-router-dom";
+import SimpleSearch from "./search";
 
 function App() {
   return (
@@ -50,7 +51,9 @@ function App() {
                 </li>
               </ul>
             </div>
-            <div id="nav-right" className="w-40"></div>
+            <div id="nav-right" className="">
+              <SimpleSearch />
+            </div>
           </div>
         </div>
       </Affix>

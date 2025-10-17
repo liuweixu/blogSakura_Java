@@ -8,6 +8,9 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 此处程序的作用，项目启动时，这些配置类会被导入，创建交换器、队列，并且进行绑定设置。
+ */
 @Configuration
 public class RabbitMQArticleConfig {
 
@@ -26,6 +29,7 @@ public class RabbitMQArticleConfig {
         return new Queue(RabbitMQArticleConstants.ARTICLE_DELETE_QUEUE, true);
     }
 
+
     @Bean
     public Binding insertQueueBinding() {
         return BindingBuilder.bind(insertQueue()).to(topicExchange()).with(RabbitMQArticleConstants.ARTICLE_INSERT_KEY);
@@ -35,4 +39,5 @@ public class RabbitMQArticleConfig {
     public Binding deleteQueueBinding() {
         return BindingBuilder.bind(deleteQueue()).to(topicExchange()).with(RabbitMQArticleConstants.ARTICLE_DELETE_KEY);
     }
+
 }

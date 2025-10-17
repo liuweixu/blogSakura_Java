@@ -37,13 +37,18 @@ export function Feature() {
               id="feature-item"
               className="relative h-40 shadow-[1px_3px_3px_rgba(0,0,0,0.3)] overflow-hidden rounded-2xl"
             >
-              <Link to={"/article/" + invoice.id} className="h-full block group">
+              <Link
+                to={"/article/" + invoice.id}
+                className="h-full block group"
+              >
                 <div
                   id="img-box"
                   className="transition-all duration-350 ease-in-out scale-100 h-full group-hover:scale-120"
                 >
                   <img
-                    src={`https://api.r10086.com/樱道随机图片api接口.php?图片系列=动漫综合${Math.floor(Math.random() * 18) + 1}`}
+                    src={`https://api.r10086.com/樱道随机图片api接口.php?图片系列=动漫综合${
+                      Math.floor(Math.random() * 18) + 1
+                    }`}
                     alt=""
                     className="w-full h-full"
                   />
@@ -56,7 +61,8 @@ export function Feature() {
                     {invoice.title}
                   </h3>
                   <p className="italic text-xs relative text-gray-300 text-center transtion-all duration-300 ease-linear delay-100 translate-x-full mt-4 h-10 leading-5 group-hover:translate-x-0 ellipsis-two">
-                    {invoice.content.replace(/<[^>]+>/g, "").slice(0, 10) + "..."}
+                    {invoice.content.replace(/<[^>]+>/g, "").slice(0, 10) +
+                      "..."}
                   </p>
                 </div>
               </Link>

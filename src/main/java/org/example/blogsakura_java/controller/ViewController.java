@@ -3,8 +3,10 @@ package org.example.blogsakura_java.controller;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.example.blogsakura_java.configure.ArticleBloomFilter;
+import org.example.blogsakura_java.constants.RabbitMQArticleConstants;
 import org.example.blogsakura_java.pojo.ViewRequest;
 import org.example.blogsakura_java.service.ViewService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +16,21 @@ public class ViewController {
 
     @Resource
     private ViewService viewService;
-    
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
 
     @GetMapping("/article/views/{id}")
     public Long getViews(@PathVariable String id) {
-        log.info("读取文章：{}", id);
+        log.info("读取文章阅读数：{}", id);
         return viewService.getViews(id);
     }
 
     @PutMapping("/article/views/{id}")
     public void updateViews(@PathVariable String id) {
-        log.info("更新文章：{}", id);
+        log.info("更新文章阅读数：{}", id);
         viewService.updateViews(id);
+        rabbitTemplate.convertAndSend(RabbitMQArticleConstants.ARTICLE_EXCHANGE, RabbitMQArticleConstants.ARTICLE_INSERT_KEY, id);
     }
 }
