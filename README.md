@@ -21,7 +21,7 @@ React（19版本）、TypeScript/JavaScript、Nodejs、Antd、Shadcn/ui、HTML�
 
 ### 后端
 
-SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token
+SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token、Elastic Search、RabbitMQ
 
 ## 界面介绍
 
@@ -68,6 +68,7 @@ SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token
 9. 在Redis与MySQL的读写中，引入分布式锁，保证在并发测试场景下，能够保持原子性，并且数据未丢失。
 10. 引入布隆过滤器，解决缓存穿透的问题。
 11. 前端使用懒加载，优化页面启动时间。
+12. 实现Elastic Search实现全文搜索（后端实现完毕，前端还正在实现）
 
 ## 使用方式
 
@@ -115,12 +116,11 @@ npm run dev
 
 - [ ] 添加个人介绍页
 - [ ] 处理富文本，让图片也能显示
+- [ ] 处理首页，学习添加Echart
 
 ## 后端
 
-- [ ] 处理首页，学习添加Echart
 - [ ] 引入Nacos，更方便管理配置
-- [ ] 引入Elastic Search，实现全文的搜索。
 
 # 感谢
 
@@ -155,5 +155,15 @@ npm run dev
 [之前博客](https://github.com/liuweixu/blogsakura)使用express和nodejs。不过因为express和nodejs尽管比较轻量，但是写起来有时候容易造成程序过于耦合，
 不符合“高内聚低耦合”的思维，所以我后来改用SpringBoot和MyBatis。
 
+### Elastic Search
+
+选的版本是7.x版本，尽管这版本不如后面8.x等版本更加安全（没有ssl认证，没有用户认证等），但是实现比较方便，目前使用的技术也成熟一些，SpringBoot集成中不需要额外考虑ssl等问题。
+
+不过如果顾虑安全性，还是使用8.x版本更好一些。
+
+~~
+选择的版本是8.X版本，本来想选择最新，但是后来发现ik分词器最多只能支持8.4版本，所以就用8.4.1版本，但是开发过程中碰上了一些问题，其中最头疼的就是ssl问题。我最后是直接把es和kibana涉及到ssl的都关闭，并把项目中的yml的https改为http，这样才能使用。~~
+
+~~不过，我发现，要想顺利开发项目，选稳一点版本更好，比如7.x等就行，至少没这么多麻烦事。~~
 
 

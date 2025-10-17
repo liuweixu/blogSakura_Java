@@ -37,4 +37,11 @@ public interface ArticleMapper {
 
     @Select("select id from article")
     public List<String> getId();
+
+    // 备用 Article上的channel_id改为相应的name
+    /**
+     *
+     * select a.id, a.title, a.content, c.name as channelname, a.image_type, a.image_url, a.publish_date, a.edit_date, a.view
+     * from article as a left join channel as c on a.channel_id = c.id
+     */
 }

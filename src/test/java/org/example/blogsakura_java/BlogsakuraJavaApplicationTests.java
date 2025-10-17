@@ -1,22 +1,40 @@
 package org.example.blogsakura_java;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import jakarta.annotation.Resource;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.example.blogsakura_java.controller.ArticleController;
 import org.example.blogsakura_java.controller.UserController;
+import org.example.blogsakura_java.mapper.ArticleMapper;
 import org.example.blogsakura_java.mapper.UserMapper;
 import org.example.blogsakura_java.pojo.Article;
 import org.example.blogsakura_java.pojo.User;
 import org.example.blogsakura_java.service.ViewService;
+import org.example.blogsakura_java.test.HotelConstants;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -40,6 +58,8 @@ public class BlogsakuraJavaApplicationTests {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private ArticleMapper articleMapper;
 
 
     @Test

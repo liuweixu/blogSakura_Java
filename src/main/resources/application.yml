@@ -19,6 +19,17 @@ spring:
       host: 127.0.0.1
       port: 6379
       password:
+  # RabbitMQ配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stream:
+      username: guest
+      password: guest
+      virtual-host: /
+## elastic search配置
+elasticsearch:
+  url: http://localhost:9200
 
 ## mybatis 配置
 mybatis:
@@ -47,3 +58,4 @@ sa-token:
 logging:
   level:
     org.springframework.jdbc.support.JdbcTransactionManager: debug
+    tracer: TRACE

@@ -42,21 +42,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteArticleById(String id){
+    public void deleteArticleById(String id) {
         articleMapper.deleteArticleById(id);
     }
 
     @Override
-    public Article getArticleById(String id){
+    public Article getArticleById(String id) {
         return articleMapper.getArticleById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insertArticle(ArticleInsert articleInsert) {
+    public void insertArticle(ArticleInsert articleInsert, String id) {
         Article article = new Article();
-        long id = IdWorker.getId(); //添加雪花算法的id
-        article.setId(String.valueOf(id));
+
+        article.setId(id);
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         article.setPublishDate(nowTime);
         article.setEditDate(nowTime);

@@ -17,7 +17,7 @@ public interface ArticleService {
 
     Article getArticleById(String id);
 
-    void insertArticle(ArticleInsert articleInsert);
+    void insertArticle(ArticleInsert articleInsert, String id);
 
     void updateArticle(ArticleUpdate articleUpdate, String id);
 }
