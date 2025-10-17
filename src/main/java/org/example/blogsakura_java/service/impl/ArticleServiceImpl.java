@@ -55,7 +55,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional(rollbackFor = Exception.class)
     public void insertArticle(ArticleInsert articleInsert, String id) {
         Article article = new Article();
-
         article.setId(id);
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
         article.setPublishDate(nowTime);

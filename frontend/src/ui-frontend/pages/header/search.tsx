@@ -9,6 +9,7 @@ const { Search } = Input;
 const SimpleSearch = () => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [results, setResults] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
