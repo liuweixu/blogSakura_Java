@@ -2,12 +2,10 @@ package org.example.blogsakura_java.controller;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.example.blogsakura_java.configure.ArticleBloomFilter;
-import org.example.blogsakura_java.constants.RabbitMQArticleConstants;
+import org.example.blogsakura_java.constants.RabbitMQConstants;
 import org.example.blogsakura_java.pojo.ViewRequest;
 import org.example.blogsakura_java.service.ViewService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -31,6 +29,6 @@ public class ViewController {
     public void updateViews(@PathVariable String id, @RequestBody ViewRequest viewRequest) {
         log.info("更新文章阅读数：{}", id);
         viewService.updateViews(id, viewRequest.getView());
-        rabbitTemplate.convertAndSend(RabbitMQArticleConstants.ARTICLE_EXCHANGE, RabbitMQArticleConstants.ARTICLE_INSERT_KEY, id);
+        rabbitTemplate.convertAndSend(RabbitMQConstants.ARTICLE_EXCHANGE, RabbitMQConstants.ARTICLE_INSERT_KEY, id);
     }
 }

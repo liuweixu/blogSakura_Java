@@ -21,7 +21,6 @@ const App = () => {
     };
     getCount();
   }, []);
-  console.log(articleCount, channelCount);
   return (
     <div>
       <Breadcrumb

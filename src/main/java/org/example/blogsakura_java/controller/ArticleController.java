@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.example.blogsakura_java.aop.Log;
-import org.example.blogsakura_java.constants.RabbitMQArticleConstants;
+import org.example.blogsakura_java.constants.RabbitMQConstants;
 import org.example.blogsakura_java.pojo.*;
 import org.example.blogsakura_java.service.ArticleService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -31,7 +31,7 @@ public class ArticleController {
     public Result deleteArticleById(@PathVariable String id) {
         log.info("删除id的文章");
         // 发送删除文章的消息
-        rabbitTemplate.convertAndSend(RabbitMQArticleConstants.ARTICLE_EXCHANGE, RabbitMQArticleConstants.ARTICLE_DELETE_KEY, id);
+        rabbitTemplate.convertAndSend(RabbitMQConstants.ARTICLE_EXCHANGE, RabbitMQConstants.ARTICLE_DELETE_KEY, id);
         articleService.deleteArticleById(id);
         return Result.success();
     }
@@ -50,7 +50,7 @@ public class ArticleController {
         String id = String.valueOf(IdWorker.getId()); //添加雪花算法的id
         articleService.insertArticle(articleInsert, id);
         // 发送新增文章的消息
-        rabbitTemplate.convertAndSend(RabbitMQArticleConstants.ARTICLE_EXCHANGE, RabbitMQArticleConstants.ARTICLE_INSERT_KEY, id);
+        rabbitTemplate.convertAndSend(RabbitMQConstants.ARTICLE_EXCHANGE, RabbitMQConstants.ARTICLE_INSERT_KEY, id);
         return Result.success();
     }
 
@@ -60,7 +60,7 @@ public class ArticleController {
         log.info("修改文章");
         articleService.updateArticle(articleUpdate, id);
         // 发送修改文章的消息
-        rabbitTemplate.convertAndSend(RabbitMQArticleConstants.ARTICLE_EXCHANGE, RabbitMQArticleConstants.ARTICLE_INSERT_KEY, id);
+        rabbitTemplate.convertAndSend(RabbitMQConstants.ARTICLE_EXCHANGE, RabbitMQConstants.ARTICLE_INSERT_KEY, id);
         return Result.success();
     }
 

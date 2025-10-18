@@ -24,7 +24,7 @@ export function LoginPage() {
         onSubmit={form.handleSubmit(async (fromValue: FieldValues) => {
           //触发异步
           const res = await loginAPI(fromValue);
-          console.log(res);
+          // console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((res as any).data.msg == "success") {
             navigate("/backend/"); //跳转至首页

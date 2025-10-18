@@ -29,7 +29,6 @@ export function addArticleAPI(formData: {
 export function getArticleListAPI( formData: {
   channel_name: string;
 }) {
-  console.log('测试111111', formData);
   return request({
     url: `/api/backend/articlelist`,
     method: 'PUT',

@@ -67,7 +67,7 @@ export const Article = () => {
     getArticleList();
   }, [reqData]);
 
-  console.log(articleList);
+  // console.log(articleList);
 
   // 删除文章(删除后要更新文章列表)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

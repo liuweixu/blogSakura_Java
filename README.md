@@ -21,7 +21,7 @@ React（19版本）、TypeScript/JavaScript、Nodejs、Antd、Shadcn/ui、HTML�
 
 ### 后端
 
-SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token、Elastic Search、RabbitMQ
+SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token、Elastic Search、RabbitMQ、Redission
 
 ## 界面介绍
 
@@ -65,10 +65,10 @@ SpringBoot、MyBatis、MySQL、Java、JUnit、Sa-Token、Elastic Search、Rabbit
 7. 前端程序使用React、TypeScipt等，后端使用SpringBoot、MyBatis、Sa-Token
    等，代码清晰易懂，方便初学者学习。
 8. 阅读数等高频数值使用Redis缓存，并针对冷数据采取一定的过期策略处理，保证系统的稳定性。
-9. 在Redis与MySQL的读写中，引入分布式锁，保证在并发测试场景下，能够保持原子性，并且数据未丢失。
+9. 在Redis与MySQL的读写中，引入分布式锁和RabbitMQ，保证在并发测试场景下，能够保持原子性，并且数据未丢失。
 10. 引入布隆过滤器，解决缓存穿透的问题。
 11. 前端使用懒加载，优化页面启动时间。
-12. 实现Elastic Search实现全文搜索（后端实现完毕，前端还正在实现）
+12. 实现Elastic Search实现全文搜索
 
 ## 使用方式
 
