@@ -43,6 +43,10 @@ class ESServiceImpl implements ESService {
         try {
             // 先查询相应Article
             Article article = articleMapper.getArticleById(id);
+            if (article == null) {
+                log.info("插入ES-文章不存在");
+                return;
+            }
             // 转为ArticleDoc类型
             ArticleDoc articleDoc = new ArticleDoc(article);
 
@@ -73,13 +77,14 @@ class ESServiceImpl implements ESService {
      * 新增初始化操作
      */
     @Override
-    @PostConstruct
+//    @PostConstruct
     public void initDataToES() {
         log.info("开始初始化数据到Elastic Search");
         try {
             List<Article> articles = articleMapper.getArticleList();
             BulkRequest request = new BulkRequest();
             for (Article article : articles) {
+                log.info("" + article);
                 ArticleDoc articleDoc = new ArticleDoc(article);
                 request.add(new IndexRequest("article").id(articleDoc.getId())
                         .source(JSON.toJSONString(articleDoc), XContentType.JSON));

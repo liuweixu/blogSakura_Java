@@ -43,6 +43,7 @@ public class ViewServiceImpl implements ViewService {
                         "local value = redis.call(\"GET\", key)\n" +
                         "if not value then\n" +
                         "    redis.call(\"SET\", key, defaultValue, \"EX\", expireSeconds)\n" +
+                        "    return defaultValue\n" +
                         "else\n" +
                         "    local num = tonumber(value)\n" +
                         "    num = num + 1\n" +
@@ -83,8 +84,6 @@ public class ViewServiceImpl implements ViewService {
             log.warn("文章id {} 不存在", id);
             return;
         }
-
-
         Long result = stringRedisTemplate.execute(
                 incrementScript,
                 Collections.singletonList(id),

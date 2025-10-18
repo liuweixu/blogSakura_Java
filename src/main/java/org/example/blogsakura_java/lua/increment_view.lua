@@ -10,6 +10,7 @@ local expireSeconds = tonumber(ARGV[2])
 local value = redis.call("GET", key)
 if not value then
     redis.call("SET", key, defaultValue, "EX", expireSeconds)
+    return defaultValue
 else
     local num = tonumber(value)
     num = num + 1

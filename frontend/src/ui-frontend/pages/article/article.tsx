@@ -29,6 +29,11 @@ function App() {
         const channel_id = res.data.data.channel_id;
         const res_channel = await getChannelById(channel_id.toString());
         const channel_name = res_channel.data.name;
+        const nowView = res.data.data.view;
+        console.log("当前阅读数:", nowView);
+        await updateArticleViewsById(id, nowView);
+        const res1 = await getArticleViewsById(id);
+        SetView(res1?.data);
         setData({
           title: title,
           content: content,
@@ -40,18 +45,6 @@ function App() {
     };
     getArticleContent();
   }, [id]);
-
-  useEffect(() => {
-    const getViews = async () => {
-      const res = await getArticleViewsById(id);
-      await updateArticleViewsById(id, res?.data);
-      const res1 = await getArticleViewsById(id);
-      SetView(res1?.data);
-    };
-    getViews();
-  }, []);
-
-  console.log("views，", view);
 
   return (
     //ArticleWrapper
@@ -76,7 +69,7 @@ function App() {
                   src="/statics/images/list_01.png"
                 ></img>
               </span>
-              <span>{data?.channel_name}</span>
+              <span>{view}</span>
               {/*<span className="mx-1.5">·</span>*/}
             </p>
           )}
